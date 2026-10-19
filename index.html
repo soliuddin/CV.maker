@@ -3,11 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
 
-  <title>BengalProCV - Professional Studio</title>
+  <!-- Content Security Policy: only trusted sources may load scripts, styles, fonts and images -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://images.unsplash.com; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="robots" content="index, follow" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#09111e" />
+
+  <!-- SEO -->
+  <title>BengalProCV – Free CV Builder for West Bengal Students | Exact-Size PDF Export</title>
+  <meta name="description" content="Free online CV builder for West Bengal students and fresher job seekers. Ready-made profiles for Madhyamik, 10+2, graduates and DMLT, with WBBSE/WBCHSE-ready education details and exact-size PDF download." />
+  <meta name="keywords" content="CV maker West Bengal, free CV builder, resume format Bengal, Madhyamik CV, 10+2 CV, DMLT resume, fresher CV, bio-data format, PDF CV download" />
+  <meta name="author" content="Md Soliuddin" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="BengalProCV – Free CV Builder for West Bengal Students" />
+  <meta property="og:description" content="Build a professional CV in minutes and download it as a PDF of the exact size you choose." />
+  <meta property="og:locale" content="en_IN" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BengalProCV – Free CV Builder for West Bengal Students" />
+  <meta name="twitter:description" content="Build a professional CV in minutes and download it as a PDF of the exact size you choose." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232563eb'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EWB%3C/text%3E%3C/svg%3E" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "BengalProCV",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any (web browser)",
+    "description": "Free CV and bio-data builder for West Bengal students with ready-made profiles and exact-size PDF export.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+    "author": { "@type": "Person", "name": "Md Soliuddin" }
+  }
+  </script>
+
+  <!-- Anti-clickjacking: hide the app if someone tries to embed it in another site's frame -->
+  <script>
+    (function () {
+      if (window.top !== window.self) {
+        document.documentElement.style.display = 'none';
+        try { window.top.location = window.self.location.href; } catch (e) {}
+      }
+    })();
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,24 +117,31 @@
       background: #0ea5e9;
     }
 
-    #preset-menu::-webkit-scrollbar-thumb {
+    #preset-menu::-webkit-scrollbar-thumb,
+    #religion-menu::-webkit-scrollbar-thumb {
       background: #475569;
     }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 h-screen overflow-hidden select-none">
 
+  <noscript>
+    <div style="padding:24px;font-family:sans-serif;color:#fff;background:#0f172a">
+      BengalProCV needs JavaScript enabled in your browser to build and export your CV.
+    </div>
+  </noscript>
+
   <!-- ================= PDF EXPORT & EXACT SIZE STUDIO ================= -->
-  <div id="format-selection-modal" class="fixed inset-0 z-[10000] bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto">
+  <div id="format-selection-modal" class="fixed inset-0 z-[10000] bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="bg-slate-900 border border-cyan-500/40 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4 text-white">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div>
-          <h3 class="font-bold text-base tracking-wide text-white uppercase flex items-center gap-2">
+          <h2 id="modal-title" class="font-bold text-base tracking-wide text-white uppercase flex items-center gap-2">
             <span>📥</span> Export & Exact Size Studio
-          </h3>
+          </h2>
           <p class="text-[11px] text-slate-400 mt-0.5" id="modal-subtitle">Select PDF to continue</p>
         </div>
-        <button type="button" onclick="closeFormatModal()" class="text-slate-400 hover:text-white text-lg px-2 py-1">✕</button>
+        <button type="button" onclick="closeFormatModal()" class="text-slate-400 hover:text-white text-lg px-2 py-1" aria-label="Close">✕</button>
       </div>
 
       <!-- STEP 1: PDF ONLY -->
@@ -118,28 +164,28 @@
 
         <div class="space-y-3 bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 shadow-inner">
           <div>
-            <label class="block font-bold text-cyan-400 uppercase text-[10px] mb-1">Custom Document Name:</label>
-            <input type="text" id="custom-filename-input" placeholder="e.g. Rahul_Das_CV" maxlength="80" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-medium">
+            <label for="custom-filename-input" class="block font-bold text-cyan-400 uppercase text-[10px] mb-1">Custom Document Name:</label>
+            <input type="text" id="custom-filename-input" placeholder="e.g. Rahul_Das_CV" maxlength="80" autocomplete="off" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-medium">
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block font-bold text-slate-300 uppercase text-[10px] mb-1">Target Exact Size:</label>
+              <label for="custom-size-value" class="block font-bold text-slate-300 uppercase text-[10px] mb-1">Target Exact Size:</label>
               <input type="number" id="custom-size-value" value="250" min="0.01" step="any" oninput="updateExportPreview()" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-mono">
             </div>
             <div>
-              <label class="block font-bold text-slate-300 uppercase text-[10px] mb-1">Unit (KB / MB):</label>
+              <label for="custom-size-unit" class="block font-bold text-slate-300 uppercase text-[10px] mb-1">Unit (KB / MB):</label>
               <select id="custom-size-unit" onchange="updateExportPreview()" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-semibold cursor-pointer">
                 <option value="KB" selected>KB (Kilobytes)</option>
                 <option value="MB">MB (Megabytes)</option>
               </select>
             </div>
           </div>
-          <p id="export-size-preview" class="text-[10.5px] text-cyan-300 font-mono font-semibold"></p>
+          <p id="export-size-preview" class="text-[10.5px] text-cyan-300 font-mono font-semibold" aria-live="polite"></p>
           <p class="text-[9.5px] text-slate-400 italic">The PDF is generated at exactly this size (1 KB = 1024 bytes). If the size is too small for the CV, you will be asked to enter a larger value.</p>
         </div>
 
-        <div id="export-error" class="hidden p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-200 text-[11px] leading-relaxed"></div>
+        <div id="export-error" role="alert" class="hidden p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-200 text-[11px] leading-relaxed"></div>
 
         <div class="flex items-center justify-between pt-2 border-t border-slate-800">
           <button type="button" onclick="backToFormats()" class="px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-lg border border-slate-700 hover:bg-slate-800 transition">← Back</button>
@@ -162,19 +208,19 @@
   </div>
 
   <!-- ================= MODERN CALENDAR MODAL ================= -->
-  <div id="custom-calendar-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto">
+  <div id="custom-calendar-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto" role="dialog" aria-modal="true" aria-label="Choose date of birth">
     <div class="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-xs p-5 shadow-2xl space-y-4 text-white">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-1.5">
-          <select id="cal-month-select" onchange="changeCalMonth()" class="bg-slate-800 text-cyan-300 font-semibold text-xs py-1 px-2 rounded-lg border border-slate-700 outline-none cursor-pointer">
+          <select id="cal-month-select" aria-label="Month" onchange="changeCalMonth()" class="bg-slate-800 text-cyan-300 font-semibold text-xs py-1 px-2 rounded-lg border border-slate-700 outline-none cursor-pointer">
             <option value="0">January</option><option value="1">February</option><option value="2">March</option>
             <option value="3">April</option><option value="4">May</option><option value="5">June</option>
             <option value="6">July</option><option value="7">August</option><option value="8">September</option>
             <option value="9">October</option><option value="10">November</option><option value="11">December</option>
           </select>
-          <select id="cal-year-select" onchange="changeCalYear()" class="bg-slate-800 text-white font-semibold text-xs py-1 px-2 rounded-lg border border-slate-700 outline-none cursor-pointer"></select>
+          <select id="cal-year-select" aria-label="Year" onchange="changeCalYear()" class="bg-slate-800 text-white font-semibold text-xs py-1 px-2 rounded-lg border border-slate-700 outline-none cursor-pointer"></select>
         </div>
-        <button type="button" onclick="closeCalendarModal()" class="text-slate-400 hover:text-white text-sm">✕</button>
+        <button type="button" onclick="closeCalendarModal()" class="text-slate-400 hover:text-white text-sm" aria-label="Close">✕</button>
       </div>
 
       <div class="grid grid-cols-7 text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -191,19 +237,19 @@
   </div>
 
   <!-- ================= PHOTO ADJUSTMENT MODAL ================= -->
-  <div id="crop-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto">
+  <div id="crop-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto" role="dialog" aria-modal="true" aria-label="Calibrate passport photo">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4 text-white">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>
-          <h3 class="font-bold text-sm tracking-wide text-white uppercase">Calibrate Passport Photo</h3>
+          <h2 class="font-bold text-sm tracking-wide text-white uppercase">Calibrate Passport Photo</h2>
           <p class="text-[11px] text-slate-400">Position candidate face within circle (Scroll wheel to zoom)</p>
         </div>
-        <button onclick="closeCropModal()" class="text-slate-400 hover:text-white text-base">✕</button>
+        <button onclick="closeCropModal()" class="text-slate-400 hover:text-white text-base" aria-label="Close">✕</button>
       </div>
 
       <div class="flex justify-center py-1">
         <div class="relative w-52 h-52 rounded-full border-4 border-cyan-500 overflow-hidden bg-slate-950 shadow-inner flex items-center justify-center cursor-grab active:cursor-grabbing" id="drag-canvas-container">
-          <img id="modal-crop-img" src="" alt="Adjust" class="absolute max-w-none origin-center pointer-events-none" style="transform: translate(0px, 0px) scale(1) rotate(0deg);">
+          <img id="modal-crop-img" src="" alt="" class="absolute max-w-none origin-center pointer-events-none" style="transform: translate(0px, 0px) scale(1) rotate(0deg);">
           <div class="absolute inset-0 pointer-events-none border border-white/20 rounded-full flex items-center justify-center">
             <div class="w-full h-px bg-white/20"></div>
             <div class="h-full w-px bg-white/20 absolute"></div>
@@ -214,21 +260,21 @@
       <div class="space-y-2.5 bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs">
         <div>
           <div class="flex justify-between text-slate-300 font-medium mb-1">
-            <span>Zoom Scale (Mouse Wheel Supported)</span>
+            <label for="slider-zoom">Zoom Scale (Mouse Wheel Supported)</label>
             <span id="val-zoom" class="text-cyan-400 font-mono">1.00x</span>
           </div>
           <input type="range" id="slider-zoom" min="0.05" max="8" step="0.01" value="1" class="w-full accent-cyan-500 bg-slate-800 h-1 rounded cursor-pointer">
         </div>
         <div>
           <div class="flex justify-between text-slate-300 font-medium mb-1">
-            <span>Center (X-Axis)</span>
+            <label for="slider-x">Center (X-Axis)</label>
             <span id="val-x" class="text-cyan-400 font-mono">0px</span>
           </div>
           <input type="range" id="slider-x" min="-800" max="800" step="1" value="0" class="w-full accent-cyan-500 bg-slate-800 h-1 rounded cursor-pointer">
         </div>
         <div>
           <div class="flex justify-between text-slate-300 font-medium mb-1">
-            <span>Center (Y-Axis)</span>
+            <label for="slider-y">Center (Y-Axis)</label>
             <span id="val-y" class="text-cyan-400 font-mono">0px</span>
           </div>
           <input type="range" id="slider-y" min="-800" max="800" step="1" value="0" class="w-full accent-cyan-500 bg-slate-800 h-1 rounded cursor-pointer">
@@ -252,20 +298,22 @@
     <!-- ================= LEFT: BUILDER CONSOLE ================= -->
     <aside class="wizard-ui w-full xl:w-[490px] bg-[#09111e] text-white flex flex-col h-full shrink-0 shadow-2xl z-20 border-r border-slate-800/80">
 
+      <h1 class="sr-only">BengalProCV – Free CV Builder for West Bengal Students</h1>
+
       <!-- Top Fixed Bar with Signature Badge & Controls -->
       <div class="p-4 pb-3 border-b border-slate-800 bg-[#09111e] shrink-0 space-y-2.5">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center font-black text-white text-xs tracking-wider shadow-md">WB</div>
+            <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center font-black text-white text-xs tracking-wider shadow-md" aria-hidden="true">WB</div>
             <span class="font-bold text-sm text-slate-100 tracking-tight">Bengal<span class="text-cyan-400">ProCV</span></span>
           </div>
 
           <!-- Undo / Redo / Auto-Save / Author Block -->
           <div class="flex items-center gap-1.5">
-            <button type="button" id="btn-undo" onclick="handleUndo()" title="Undo (Ctrl+Z)" class="px-2 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs font-bold text-slate-400 hover:text-cyan-300 hover:border-cyan-500/60 disabled:opacity-30 disabled:pointer-events-none transition">
+            <button type="button" id="btn-undo" onclick="handleUndo()" title="Undo (Ctrl+Z)" aria-label="Undo" class="px-2 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs font-bold text-slate-400 hover:text-cyan-300 hover:border-cyan-500/60 disabled:opacity-30 disabled:pointer-events-none transition">
               ↶
             </button>
-            <button type="button" id="btn-redo" onclick="handleRedo()" title="Redo (Ctrl+Y)" class="px-2 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs font-bold text-slate-400 hover:text-cyan-300 hover:border-cyan-500/60 disabled:opacity-30 disabled:pointer-events-none transition">
+            <button type="button" id="btn-redo" onclick="handleRedo()" title="Redo (Ctrl+Y)" aria-label="Redo" class="px-2 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs font-bold text-slate-400 hover:text-cyan-300 hover:border-cyan-500/60 disabled:opacity-30 disabled:pointer-events-none transition">
               ↷
             </button>
             <div id="save-indicator" class="hidden items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-600/50 text-[10px] text-emerald-300 font-mono">
@@ -273,7 +321,7 @@
             </div>
             <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-700/80 shadow-inner">
               <span class="text-[11px] font-medium text-slate-300">Made with</span>
-              <span class="text-[12px] animate-pulse">❤️</span>
+              <span class="text-[12px] animate-pulse" aria-hidden="true">❤️</span>
               <span class="text-[11px] font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Md Soliuddin</span>
             </div>
           </div>
@@ -282,7 +330,7 @@
         <!-- Student Profile Picker (colorful) with Instant Reset Button -->
         <div class="p-2.5 bg-slate-900/90 rounded-xl border border-slate-800 shadow-inner flex items-end justify-between gap-2.5">
           <div class="flex-1 relative" id="preset-wrapper">
-            <label class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">⚡ Select Student Profile (West Bengal):</label>
+            <span class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1" id="preset-label">⚡ Select Student Profile (West Bengal):</span>
 
             <!-- Native select kept as the data source (hidden) -->
             <select id="preset-selector" class="hidden" aria-hidden="true" tabindex="-1" onchange="loadPreset(this.value)">
@@ -296,14 +344,14 @@
             </select>
 
             <!-- Colorful trigger -->
-            <button type="button" id="preset-trigger" onclick="togglePresetMenu()" aria-haspopup="listbox" aria-expanded="false"
+            <button type="button" id="preset-trigger" onclick="togglePresetMenu()" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="preset-label"
               class="w-full flex items-center gap-2.5 p-2 rounded-xl border shadow-lg transition hover:brightness-110 active:scale-[0.99]">
-              <span id="preset-trigger-icon" class="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 shadow-md"></span>
+              <span id="preset-trigger-icon" class="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 shadow-md" aria-hidden="true"></span>
               <span class="flex-1 min-w-0 text-left">
                 <span id="preset-trigger-title" class="block text-xs font-bold text-white truncate"></span>
                 <span id="preset-trigger-sub" class="block text-[10px] text-slate-300/80 truncate"></span>
               </span>
-              <span id="preset-chevron" class="text-slate-200 text-xs transition-transform duration-200">▾</span>
+              <span id="preset-chevron" class="text-slate-200 text-xs transition-transform duration-200" aria-hidden="true">▾</span>
             </button>
 
             <!-- Colorful menu -->
@@ -312,7 +360,7 @@
 
           <!-- Badge-Style Instant Reset Button -->
           <button type="button" onclick="resetToInitialPreset()" title="Reset everything to default, revert photo, and go to Step 1" class="h-9 px-3 rounded-lg bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500 hover:border-rose-500 text-rose-300 hover:text-white font-semibold text-xs transition-all duration-200 flex items-center gap-1.5 shadow-sm active:scale-95 shrink-0">
-            <span class="text-sm">↺</span>
+            <span class="text-sm" aria-hidden="true">↺</span>
             <span>Reset</span>
           </button>
         </div>
@@ -342,43 +390,43 @@
 
             <div id="photo-upload-container" class="flex flex-wrap items-center gap-2 pt-1">
               <input type="file" id="photo-file" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="handleSecureFileUpload(event)">
-              <button onclick="document.getElementById('photo-file').click()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-1.5 px-3 rounded-lg shadow text-xs transition">Upload Photo</button>
-              <button onclick="openCropModal()" id="btn-adjust-photo" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-1.5 px-2.5 rounded-lg font-medium text-xs transition">⚙ Adjust Position</button>
-              <button onclick="resetPhoto()" class="text-red-400 hover:text-red-300 ml-1 text-xs">Remove</button>
+              <button type="button" onclick="document.getElementById('photo-file').click()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-1.5 px-3 rounded-lg shadow text-xs transition">Upload Photo</button>
+              <button type="button" onclick="openCropModal()" id="btn-adjust-photo" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-1.5 px-2.5 rounded-lg font-medium text-xs transition">⚙ Adjust Position</button>
+              <button type="button" onclick="resetPhoto()" class="text-red-400 hover:text-red-300 ml-1 text-xs">Remove</button>
             </div>
           </div>
 
           <!-- ARROW NAVIGATION GRID -->
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">First Name</label>
-              <input type="text" id="in-fn" data-row="0" data-col="0" maxlength="35" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-fn" class="block font-bold text-slate-400 uppercase text-[10px]">First Name</label>
+              <input type="text" id="in-fn" data-row="0" data-col="0" maxlength="35" autocomplete="off" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">Last Name</label>
-              <input type="text" id="in-ln" data-row="0" data-col="1" maxlength="35" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-ln" class="block font-bold text-slate-400 uppercase text-[10px]">Last Name</label>
+              <input type="text" id="in-ln" data-row="0" data-col="1" maxlength="35" autocomplete="off" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
           </div>
 
           <div>
-            <label class="block font-bold text-slate-400 uppercase text-[10px]">Designation / Headline</label>
-            <input type="text" id="in-role" data-row="1" data-col="0" maxlength="80" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+            <label for="in-role" class="block font-bold text-slate-400 uppercase text-[10px]">Designation / Headline</label>
+            <input type="text" id="in-role" data-row="1" data-col="0" maxlength="80" autocomplete="off" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">Mobile Phone</label>
-              <input type="text" id="in-phone" data-row="2" data-col="0" maxlength="20" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-phone" class="block font-bold text-slate-400 uppercase text-[10px]">Mobile Phone</label>
+              <input type="tel" id="in-phone" data-row="2" data-col="0" maxlength="20" autocomplete="off" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">Email ID</label>
-              <input type="email" id="in-email" data-row="2" data-col="1" maxlength="60" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-email" class="block font-bold text-slate-400 uppercase text-[10px]">Email ID</label>
+              <input type="email" id="in-email" data-row="2" data-col="1" maxlength="60" autocomplete="off" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
             <div class="relative">
-              <label class="block font-bold text-cyan-400 uppercase text-[10px]">District (West Bengal)</label>
+              <label for="in-loc" class="block font-bold text-cyan-400 uppercase text-[10px]">District (West Bengal)</label>
               <div class="relative mt-1">
                 <input type="text" id="in-loc" data-row="3" data-col="0" placeholder="Choose District..." autocomplete="off" maxlength="80"
                   onfocus="openFloatingCombo('in-loc', districtList)"
@@ -386,15 +434,15 @@
                   oninput="filterFloatingCombo('in-loc', districtList)"
                   class="nav-grid-input enter-nav-input w-full bg-slate-800/90 border border-slate-700 text-white p-2 pr-12 rounded-lg focus:border-cyan-400 outline-none font-medium transition">
                 <div class="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <button type="button" onclick="clearField('in-loc')" class="text-slate-400 hover:text-white px-1 text-xs" title="Clear">✕</button>
-                  <button type="button" onclick="toggleFloatingCombo('in-loc', districtList)" class="text-slate-400 hover:text-cyan-400 px-1 text-xs" title="Open list">▼</button>
+                  <button type="button" onclick="clearField('in-loc')" class="text-slate-400 hover:text-white px-1 text-xs" title="Clear" aria-label="Clear district">✕</button>
+                  <button type="button" onclick="toggleFloatingCombo('in-loc', districtList)" class="text-slate-400 hover:text-cyan-400 px-1 text-xs" title="Open list" aria-label="Open district list">▼</button>
                 </div>
               </div>
             </div>
 
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">PIN Code</label>
-              <input type="text" id="in-pin" data-row="3" data-col="1" maxlength="10" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-pin" class="block font-bold text-slate-400 uppercase text-[10px]">PIN Code</label>
+              <input type="text" id="in-pin" data-row="3" data-col="1" maxlength="10" inputmode="numeric" autocomplete="off" class="nav-grid-input enter-nav-input w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
           </div>
         </div>
@@ -405,15 +453,15 @@
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">Father's Name</label>
-              <input type="text" id="in-bio-father" maxlength="60" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-bio-father" class="block font-bold text-slate-400 uppercase text-[10px]">Father's Name</label>
+              <input type="text" id="in-bio-father" maxlength="60" autocomplete="off" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
 
             <div>
-              <label class="block font-bold text-cyan-400 uppercase text-[10px]">Date of Birth</label>
+              <span class="block font-bold text-cyan-400 uppercase text-[10px]">Date of Birth</span>
               <button type="button" onclick="openCalendarModal()" id="btn-calendar-display" class="w-full mt-1 bg-slate-800/90 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400 text-white p-2 rounded-lg text-left text-xs font-semibold flex items-center justify-between transition shadow-sm">
                 <span id="label-selected-dob">15th August, 2002</span>
-                <span class="text-cyan-400">📅</span>
+                <span class="text-cyan-400" aria-hidden="true">📅</span>
               </button>
               <input type="hidden" id="in-bio-dob" value="2002-08-15">
             </div>
@@ -421,7 +469,7 @@
 
           <!-- GENDER -->
           <div>
-            <label class="block font-bold text-slate-400 uppercase text-[10px] mb-1">Gender</label>
+            <span class="block font-bold text-slate-400 uppercase text-[10px] mb-1">Gender</span>
             <div class="grid grid-cols-3 gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
               <button type="button" onclick="setGenderPill('Male', this)" class="pill-gender py-1.5 rounded-lg text-xs font-semibold transition bg-cyan-500 text-slate-950 shadow">Male</button>
               <button type="button" onclick="setGenderPill('Female', this)" class="pill-gender py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Female</button>
@@ -430,14 +478,14 @@
             <input type="hidden" id="in-bio-gender" value="Male">
 
             <div id="wrapper-other-gender" class="hidden mt-2">
-              <label class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Gender:</label>
-              <input type="text" id="in-other-gender-val" placeholder="Type gender identity..." oninput="updateOtherGender(this.value)" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
+              <label for="in-other-gender-val" class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Gender:</label>
+              <input type="text" id="in-other-gender-val" placeholder="Type gender identity..." maxlength="40" oninput="updateOtherGender(this.value)" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
             </div>
           </div>
 
           <!-- MARITAL STATUS -->
           <div>
-            <label class="block font-bold text-cyan-400 uppercase text-[10px] mb-1">Marital Status</label>
+            <span class="block font-bold text-cyan-400 uppercase text-[10px] mb-1">Marital Status</span>
             <div class="grid grid-cols-5 gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
               <button type="button" onclick="setMaritalPill('Unmarried', this)" class="pill-marital py-1.5 rounded-lg text-[11px] font-semibold transition bg-cyan-500 text-slate-950 shadow">Unmarried</button>
               <button type="button" onclick="setMaritalPill('Married', this)" class="pill-marital py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition">Married</button>
@@ -448,15 +496,16 @@
             <input type="hidden" id="in-bio-marital" value="Unmarried">
 
             <div id="wrapper-other-marital" class="hidden mt-2">
-              <label class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Marital Status:</label>
-              <input type="text" id="in-other-marital-val" placeholder="Type marital status..." oninput="updateOtherMarital(this.value)" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
+              <label for="in-other-marital-val" class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Marital Status:</label>
+              <input type="text" id="in-other-marital-val" placeholder="Type marital status..." maxlength="40" oninput="updateOtherMarital(this.value)" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
             </div>
           </div>
 
-          <!-- RELIGION -->
-          <div>
-            <label class="block font-bold text-slate-400 uppercase text-[10px] mb-1">Religion</label>
-            <select id="in-bio-religion-select" onchange="handleReligionChange(this.value)" class="w-full bg-slate-800/90 border border-slate-700 text-white p-2 rounded-lg text-xs outline-none focus:border-cyan-400 cursor-pointer">
+          <!-- RELIGION: colorful custom picker (hidden select keeps the value) -->
+          <div class="relative" id="religion-wrapper">
+            <span class="block font-bold text-slate-400 uppercase text-[10px] mb-1" id="religion-label">Religion</span>
+
+            <select id="in-bio-religion-select" class="hidden" aria-hidden="true" tabindex="-1" onchange="handleReligionChange(this.value)">
               <option value="Hinduism">Hinduism</option>
               <option value="Islam">Islam</option>
               <option value="Christianity">Christianity</option>
@@ -465,16 +514,29 @@
               <option value="Jainism">Jainism</option>
               <option value="Other">Other / Specific Belief</option>
             </select>
+
+            <button type="button" id="religion-trigger" onclick="toggleReligionMenu()" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="religion-label"
+              class="w-full flex items-center gap-2.5 p-2 rounded-xl border shadow-md transition hover:brightness-110 active:scale-[0.99]">
+              <span id="religion-trigger-icon" class="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 shadow-md" aria-hidden="true"></span>
+              <span class="flex-1 min-w-0 text-left">
+                <span id="religion-trigger-title" class="block text-xs font-bold text-white truncate"></span>
+                <span class="block text-[10px] text-slate-300/80 truncate">Tap to change</span>
+              </span>
+              <span id="religion-chevron" class="text-slate-200 text-xs transition-transform duration-200" aria-hidden="true">▾</span>
+            </button>
+
+            <div id="religion-menu" role="listbox" class="hidden absolute left-0 right-0 top-full mt-1.5 z-[200] bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl p-1.5 max-h-72 overflow-y-auto grid grid-cols-2 gap-1"></div>
+
             <div id="wrapper-other-religion" class="hidden mt-2">
-              <label class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Religion:</label>
-              <input type="text" id="in-other-religion-val" placeholder="Type religion name..." oninput="updateResume()" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
+              <label for="in-other-religion-val" class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Religion:</label>
+              <input type="text" id="in-other-religion-val" placeholder="Type religion name..." maxlength="60" oninput="updateResume()" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
             </div>
           </div>
 
           <!-- LANGUAGE PROFICIENCY -->
           <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 space-y-2.5">
             <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
-              <label class="block font-bold text-cyan-400 uppercase text-[10px]">Languages Known & Proficiency</label>
+              <span class="block font-bold text-cyan-400 uppercase text-[10px]">Languages Known & Proficiency</span>
               <span class="text-[9.5px] text-slate-400 font-medium">Select Read (R), Write (W), Speak (S)</span>
             </div>
 
@@ -538,7 +600,7 @@
 
               <!-- Other Dynamic Row -->
               <div id="wrapper-custom-lang-row" class="hidden flex items-center justify-between bg-slate-850 p-2 rounded-lg border border-cyan-500/40">
-                <input type="text" id="in-custom-lang-name" placeholder="Language name..." oninput="syncLanguageProficiency()" class="bg-slate-900 border border-slate-700 text-white px-2 py-0.5 rounded text-xs outline-none w-28">
+                <input type="text" id="in-custom-lang-name" placeholder="Language name..." maxlength="30" aria-label="Other language name" oninput="syncLanguageProficiency()" class="bg-slate-900 border border-slate-700 text-white px-2 py-0.5 rounded text-xs outline-none w-28">
                 <div class="flex items-center gap-3 text-xs">
                   <label class="flex items-center gap-1 cursor-pointer">
                     <input type="checkbox" id="lang-other-read" checked onchange="syncLanguageProficiency()" class="accent-cyan-400 rounded">
@@ -564,11 +626,11 @@
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">Nationality</label>
-              <input type="text" id="in-bio-nation" value="Indian" maxlength="30" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
+              <label for="in-bio-nation" class="block font-bold text-slate-400 uppercase text-[10px]">Nationality</label>
+              <input type="text" id="in-bio-nation" value="Indian" maxlength="30" autocomplete="off" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
             <div>
-              <label class="block font-bold text-slate-400 uppercase text-[10px]">Resume Date of Birth Preview</label>
+              <span class="block font-bold text-slate-400 uppercase text-[10px]">Resume Date of Birth Preview</span>
               <div id="dob-preview-badge" class="mt-1 bg-slate-850 border border-slate-800 text-cyan-300 p-2 rounded-lg text-xs font-semibold">15th August, 2002</div>
             </div>
           </div>
@@ -578,7 +640,7 @@
         <div id="step-pane-3" class="space-y-3 hidden">
           <div class="flex justify-between items-center">
             <span class="text-slate-400 font-medium">Educational Timeline:</span>
-            <button onclick="addEducationCard()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-1.5 px-3 rounded-lg shadow text-xs transition">+ Add Qualification</button>
+            <button type="button" onclick="addEducationCard()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-1.5 px-3 rounded-lg shadow text-xs transition">+ Add Qualification</button>
           </div>
           <div id="education-form-container" class="space-y-3"></div>
         </div>
@@ -589,17 +651,17 @@
           <!-- PRIMARY COMPETENCY -->
           <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 space-y-2.5 shadow-sm">
             <div class="flex items-center justify-between">
-              <label class="block font-bold text-cyan-400 uppercase text-[10.5px]">Primary Competency Title</label>
+              <label for="in-skill1-title" class="block font-bold text-cyan-400 uppercase text-[10.5px]">Primary Competency Title</label>
               <span class="text-[10px] text-slate-400">Profile Specific</span>
             </div>
-            <input type="text" id="in-skill1-title" maxlength="60" class="w-full bg-slate-800/90 border border-slate-700 text-white p-2 rounded-lg outline-none text-xs focus:border-cyan-400 transition">
+            <input type="text" id="in-skill1-title" maxlength="60" autocomplete="off" class="w-full bg-slate-800/90 border border-slate-700 text-white p-2 rounded-lg outline-none text-xs focus:border-cyan-400 transition">
 
             <div class="pt-1">
               <div class="flex items-center justify-between mb-1">
-                <label class="block font-bold text-slate-300 uppercase text-[10px]">Competencies (One per line)</label>
+                <label for="in-skills-1" class="block font-bold text-slate-300 uppercase text-[10px]">Competencies (One per line)</label>
                 <span class="text-[10px] text-cyan-400 font-mono">Live Sync</span>
               </div>
-              <textarea id="in-skills-1" rows="4" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2.5 rounded-lg outline-none leading-relaxed text-xs focus:border-cyan-400 font-medium transition"></textarea>
+              <textarea id="in-skills-1" rows="4" maxlength="2000" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2.5 rounded-lg outline-none leading-relaxed text-xs focus:border-cyan-400 font-medium transition"></textarea>
             </div>
 
             <div>
@@ -611,17 +673,17 @@
           <!-- SECONDARY / IT SKILLS -->
           <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 space-y-2.5 shadow-sm">
             <div class="flex items-center justify-between">
-              <label class="block font-bold text-cyan-400 uppercase text-[10.5px]">Secondary / IT Skills Title</label>
+              <label for="in-skill2-title" class="block font-bold text-cyan-400 uppercase text-[10.5px]">Secondary / IT Skills Title</label>
               <span class="text-[10px] text-slate-400">Profile Specific</span>
             </div>
-            <input type="text" id="in-skill2-title" maxlength="60" class="w-full bg-slate-800/90 border border-slate-700 text-white p-2 rounded-lg outline-none text-xs focus:border-cyan-400 transition">
+            <input type="text" id="in-skill2-title" maxlength="60" autocomplete="off" class="w-full bg-slate-800/90 border border-slate-700 text-white p-2 rounded-lg outline-none text-xs focus:border-cyan-400 transition">
 
             <div class="pt-1">
               <div class="flex items-center justify-between mb-1">
-                <label class="block font-bold text-slate-300 uppercase text-[10px]">Competencies (One per line)</label>
+                <label for="in-skills-2" class="block font-bold text-slate-300 uppercase text-[10px]">Competencies (One per line)</label>
                 <span class="text-[10px] text-cyan-400 font-mono">Live Sync</span>
               </div>
-              <textarea id="in-skills-2" rows="3" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2.5 rounded-lg outline-none leading-relaxed text-xs focus:border-cyan-400 font-medium transition"></textarea>
+              <textarea id="in-skills-2" rows="3" maxlength="2000" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2.5 rounded-lg outline-none leading-relaxed text-xs focus:border-cyan-400 font-medium transition"></textarea>
             </div>
 
             <div>
@@ -632,18 +694,18 @@
 
           <!-- CAREER OBJECTIVE -->
           <div>
-            <label class="block font-bold text-slate-400 uppercase text-[10px]">Career Objective</label>
-            <textarea id="in-summary" rows="3" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2.5 rounded-lg leading-relaxed focus:border-cyan-400 outline-none text-xs"></textarea>
+            <label for="in-summary" class="block font-bold text-slate-400 uppercase text-[10px]">Career Objective</label>
+            <textarea id="in-summary" rows="3" maxlength="1200" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2.5 rounded-lg leading-relaxed focus:border-cyan-400 outline-none text-xs"></textarea>
           </div>
 
           <!-- PRACTICAL HIGHLIGHTS -->
           <div>
-            <label class="block font-bold text-slate-400 uppercase text-[10px]">Strengths & Practical Exposures (Line by line)</label>
-            <textarea id="in-highlights" rows="3" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2.5 rounded-lg leading-relaxed focus:border-cyan-400 outline-none text-xs"></textarea>
+            <label for="in-highlights" class="block font-bold text-slate-400 uppercase text-[10px]">Strengths & Practical Exposures (Line by line)</label>
+            <textarea id="in-highlights" rows="3" maxlength="2000" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2.5 rounded-lg leading-relaxed focus:border-cyan-400 outline-none text-xs"></textarea>
           </div>
 
           <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl text-slate-400 text-xs flex items-center gap-2">
-            <span class="text-cyan-400 text-base">ℹ</span>
+            <span class="text-cyan-400 text-base" aria-hidden="true">ℹ</span>
             <span>Review your CV on the right. When satisfied, click <b>"Export PDF"</b>.</span>
           </div>
         </div>
@@ -652,7 +714,7 @@
 
       <!-- BOTTOM BAR -->
       <div class="p-3 bg-slate-950 border-t border-slate-800 flex justify-between items-center shrink-0 shadow-lg">
-        <button onclick="prevStep()" id="btn-footer-prev" class="text-xs font-semibold text-slate-400 hover:text-white px-3.5 py-1.5 border border-slate-700 rounded-lg transition">
+        <button type="button" onclick="prevStep()" id="btn-footer-prev" class="text-xs font-semibold text-slate-400 hover:text-white px-3.5 py-1.5 border border-slate-700 rounded-lg transition">
           ← Previous
         </button>
 
@@ -660,16 +722,16 @@
           Stage <span id="footer-step-counter" class="text-cyan-400 font-bold">1</span>/4
         </div>
 
-        <button onclick="nextStep()" id="btn-footer-next" class="text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 px-4 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+        <button type="button" onclick="nextStep()" id="btn-footer-next" class="text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 px-4 py-1.5 rounded-lg shadow transition flex items-center gap-1">
           <span id="label-next-btn">Next</span>
-          <span>→</span>
+          <span aria-hidden="true">→</span>
         </button>
       </div>
 
     </aside>
 
     <!-- ================= RIGHT: HIGH-FIDELITY A4 CURRICULUM VITAE ================= -->
-    <section id="print-wrapper" class="flex-1 p-2 md:p-6 flex justify-center items-start overflow-y-auto bg-slate-900/60 h-full">
+    <main id="print-wrapper" class="flex-1 p-2 md:p-6 flex justify-center items-start overflow-y-auto bg-slate-900/60 h-full">
 
       <div id="cv-document" class="w-[210mm] h-[297mm] max-h-[297mm] min-h-[297mm] bg-white shadow-2xl flex overflow-hidden text-slate-900 box-border relative">
 
@@ -679,7 +741,7 @@
 
             <div id="cv-photo-box" class="flex flex-col items-center">
               <div class="w-32 h-32 rounded-full border-2 border-cyan-400/80 p-0.5 shadow-xl bg-slate-900 flex items-center justify-center overflow-hidden">
-                <img id="cv-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Candidate" class="w-full h-full rounded-full object-cover">
+                <img id="cv-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Candidate passport photo" class="w-full h-full rounded-full object-cover">
               </div>
             </div>
 
@@ -692,7 +754,7 @@
 
               <div class="space-y-1.5 text-[10.5px] text-slate-300 leading-snug">
                 <div class="flex items-start gap-2">
-                  <span class="text-cyan-400 text-xs mt-0.5">📞</span>
+                  <span class="text-cyan-400 text-xs mt-0.5" aria-hidden="true">📞</span>
                   <div>
                     <span class="block text-[8px] uppercase font-bold text-slate-400">Mobile Phone</span>
                     <span id="cv-phone" class="font-semibold text-white tracking-wide"></span>
@@ -700,7 +762,7 @@
                 </div>
 
                 <div class="flex items-start gap-2">
-                  <span class="text-cyan-400 text-xs mt-0.5">✉</span>
+                  <span class="text-cyan-400 text-xs mt-0.5" aria-hidden="true">✉</span>
                   <div>
                     <span class="block text-[8px] uppercase font-bold text-slate-400">Email Address</span>
                     <span id="cv-email" class="font-medium text-white break-all"></span>
@@ -708,7 +770,7 @@
                 </div>
 
                 <div class="flex items-start gap-2">
-                  <span class="text-cyan-400 text-xs mt-0.5">📍</span>
+                  <span class="text-cyan-400 text-xs mt-0.5" aria-hidden="true">📍</span>
                   <div>
                     <span class="block text-[8px] uppercase font-bold text-slate-400">Address / District</span>
                     <span id="cv-location" class="font-medium text-white leading-tight"></span>
@@ -749,9 +811,9 @@
 
             <!-- Header Section -->
             <div class="border-b-2 border-slate-900 pb-2.5">
-              <h1 class="text-2xl font-black uppercase tracking-tight text-slate-900 leading-none">
+              <div class="text-2xl font-black uppercase tracking-tight text-slate-900 leading-none">
                 <span id="cv-fn"></span> <span id="cv-ln" class="text-[#0d1b2a]"></span>
-              </h1>
+              </div>
               <p id="cv-role" class="text-[11.5px] font-bold uppercase tracking-wider text-cyan-900 mt-1.5"></p>
             </div>
 
@@ -773,9 +835,9 @@
                 <table class="w-full text-left border-collapse text-[10px]">
                   <thead>
                     <tr class="bg-slate-100 border-b border-slate-300 text-slate-900 font-bold uppercase text-[8.5px]">
-                      <th class="py-1.5 px-2.5">Course / Examination</th>
-                      <th class="py-1.5 px-2.5">Board / Council / University</th>
-                      <th class="py-1.5 px-2 text-center whitespace-nowrap">Year / Status</th>
+                      <th scope="col" class="py-1.5 px-2.5">Course / Examination</th>
+                      <th scope="col" class="py-1.5 px-2.5">Board / Council / University</th>
+                      <th scope="col" class="py-1.5 px-2 text-center whitespace-nowrap">Year / Status</th>
                     </tr>
                   </thead>
                   <tbody id="cv-education-table-body" class="divide-y divide-slate-200"></tbody>
@@ -829,7 +891,7 @@
         </div>
 
       </div>
-    </section>
+    </main>
 
   </div>
 
@@ -837,12 +899,31 @@
     "use strict";
 
     const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80";
+    const PLACEHOLDER_AVATAR = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2364748b"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+    const SAFE_IMG_SRC = /^(data:image\/(png|jpeg|webp|svg\+xml)[;,]|https:\/\/images\.unsplash\.com\/)/;
 
     function safeSetText(elemId, rawText) {
       const el = document.getElementById(elemId);
       if (el) {
         el.textContent = typeof rawText === 'string' ? rawText : '';
       }
+    }
+
+    // Only allow image sources we expect (blocks javascript:, tracking URLs, or tampered saved data)
+    function sanitizeImageSrc(src, fallback) {
+      if (typeof src === 'string' && SAFE_IMG_SRC.test(src)) return src;
+      return fallback;
+    }
+
+    // Confirms a file really is a PNG, JPEG or WEBP by checking its signature bytes
+    function hasImageSignature(bytes) {
+      const b = bytes;
+      const isPng = b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47;
+      const isJpeg = b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF;
+      const isWebp = b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+                     b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50;
+      return isPng || isJpeg || isWebp;
     }
 
     // ================= PDF EXPORT & EXACT SIZE ENGINE =================
@@ -924,7 +1005,8 @@
       const cleaned = (raw || '')
         .replace(/\.pdf$/i, '')
         .replace(/[\\/:*?"<>|\x00-\x1f]+/g, '_')
-        .trim();
+        .trim()
+        .slice(0, 80);
       return cleaned || 'Candidate_CV';
     }
 
@@ -1141,6 +1223,7 @@
       const a = document.createElement('a');
       a.href = url;
       a.download = filename;
+      a.rel = 'noopener';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -1206,28 +1289,28 @@
     }
 
     function applyStateToForm(state) {
-      if (!state) return;
+      if (!state || typeof state !== 'object') return;
       isPerformingHistoryOp = true;
 
-      if (state.preset) document.getElementById('preset-selector').value = state.preset;
+      if (state.preset && presets[state.preset]) document.getElementById('preset-selector').value = state.preset;
 
-      document.getElementById('in-fn').value = state.fn || '';
-      document.getElementById('in-ln').value = state.ln || '';
-      document.getElementById('in-role').value = state.role || '';
-      document.getElementById('in-phone').value = state.phone || '';
-      document.getElementById('in-email').value = state.email || '';
-      document.getElementById('in-loc').value = state.loc || '';
-      document.getElementById('in-pin').value = state.pin || '';
+      document.getElementById('in-fn').value = String(state.fn || '');
+      document.getElementById('in-ln').value = String(state.ln || '');
+      document.getElementById('in-role').value = String(state.role || '');
+      document.getElementById('in-phone').value = String(state.phone || '');
+      document.getElementById('in-email').value = String(state.email || '');
+      document.getElementById('in-loc').value = String(state.loc || '');
+      document.getElementById('in-pin').value = String(state.pin || '');
 
-      document.getElementById('in-bio-father').value = state.father || '';
-      if (state.dob) {
+      document.getElementById('in-bio-father').value = String(state.father || '');
+      if (state.dob && /^\d{4}-\d{2}-\d{2}$/.test(state.dob)) {
         document.getElementById('in-bio-dob').value = state.dob;
         document.getElementById('label-selected-dob').textContent = formatBirthDate(state.dob);
         document.getElementById('dob-preview-badge').textContent = formatBirthDate(state.dob);
       }
 
       // Gender restoration
-      const g = state.gender || 'Male';
+      const g = ['Male', 'Female', 'Other'].includes(state.gender) ? state.gender : 'Male';
       document.getElementById('in-bio-gender').value = g;
       document.querySelectorAll('.pill-gender').forEach(btn => {
         if (btn.textContent.trim().toLowerCase() === g.toLowerCase()) {
@@ -1238,14 +1321,14 @@
       });
       if (g === 'Other') {
         document.getElementById('wrapper-other-gender').classList.remove('hidden');
-        document.getElementById('in-other-gender-val').value = state.otherGenderVal || '';
+        document.getElementById('in-other-gender-val').value = String(state.otherGenderVal || '');
       } else {
         document.getElementById('wrapper-other-gender').classList.add('hidden');
         document.getElementById('in-other-gender-val').value = '';
       }
 
       // Marital restoration
-      const m = state.marital || 'Unmarried';
+      const m = ['Unmarried', 'Married', 'Widowed', 'Divorced', 'Other'].includes(state.marital) ? state.marital : 'Unmarried';
       document.getElementById('in-bio-marital').value = m;
       document.querySelectorAll('.pill-marital').forEach(btn => {
         if (btn.textContent.trim().toLowerCase() === m.toLowerCase()) {
@@ -1256,24 +1339,25 @@
       });
       if (m === 'Other') {
         document.getElementById('wrapper-other-marital').classList.remove('hidden');
-        document.getElementById('in-other-marital-val').value = state.otherMaritalVal || '';
+        document.getElementById('in-other-marital-val').value = String(state.otherMaritalVal || '');
       } else {
         document.getElementById('wrapper-other-marital').classList.add('hidden');
         document.getElementById('in-other-marital-val').value = '';
       }
 
       // Religion restoration
-      const r = state.religion || 'Hinduism';
+      const r = RELIGION_META[state.religion] ? state.religion : 'Hinduism';
       document.getElementById('in-bio-religion-select').value = r;
       if (r === 'Other') {
         document.getElementById('wrapper-other-religion').classList.remove('hidden');
-        document.getElementById('in-other-religion-val').value = state.otherReligionVal || '';
+        document.getElementById('in-other-religion-val').value = String(state.otherReligionVal || '');
       } else {
         document.getElementById('wrapper-other-religion').classList.add('hidden');
         document.getElementById('in-other-religion-val').value = '';
       }
+      syncReligionUI(r);
 
-      document.getElementById('in-bio-nation').value = state.nation || 'Indian';
+      document.getElementById('in-bio-nation').value = String(state.nation || 'Indian');
 
       // Languages
       if (state.langCheckboxes) {
@@ -1292,7 +1376,7 @@
         if (state.langCheckboxes.customOpen) {
           row.classList.remove('hidden');
           btn.textContent = "- Remove Custom Language";
-          document.getElementById('in-custom-lang-name').value = state.langCheckboxes.customName || '';
+          document.getElementById('in-custom-lang-name').value = String(state.langCheckboxes.customName || '');
           document.getElementById('lang-other-read').checked = !!state.langCheckboxes.oR;
           document.getElementById('lang-other-write').checked = !!state.langCheckboxes.oW;
           document.getElementById('lang-other-speak').checked = !!state.langCheckboxes.oS;
@@ -1304,34 +1388,44 @@
         syncLanguageProficiency();
       }
 
-      document.getElementById('in-skill1-title').value = state.skill1Title || '';
-      document.getElementById('in-skills-1').value = state.skills1 || '';
-      document.getElementById('in-skill2-title').value = state.skill2Title || '';
-      document.getElementById('in-skills-2').value = state.skills2 || '';
-      document.getElementById('in-summary').value = state.summary || '';
-      document.getElementById('in-highlights').value = state.highlights || '';
+      document.getElementById('in-skill1-title').value = String(state.skill1Title || '');
+      document.getElementById('in-skills-1').value = String(state.skills1 || '');
+      document.getElementById('in-skill2-title').value = String(state.skill2Title || '');
+      document.getElementById('in-skills-2').value = String(state.skills2 || '');
+      document.getElementById('in-summary').value = String(state.summary || '');
+      document.getElementById('in-highlights').value = String(state.highlights || '');
 
-      // Photo and cropping
+      // Photo and cropping (sources are validated before use)
       if (typeof state.hasPhoto === 'boolean') {
         setPhotoState(state.hasPhoto);
       }
       if (state.avatarSrc) {
-        document.getElementById('cv-avatar-img').src = state.avatarSrc;
+        document.getElementById('cv-avatar-img').src = sanitizeImageSrc(state.avatarSrc, DEFAULT_AVATAR);
       }
       if (state.rawImageSrc) {
-        rawOriginalImage = new Image();
-        rawOriginalImage.crossOrigin = "anonymous";
-        rawOriginalImage.src = state.rawImageSrc;
+        const safeRaw = sanitizeImageSrc(state.rawImageSrc, '');
+        if (safeRaw) {
+          rawOriginalImage = new Image();
+          rawOriginalImage.crossOrigin = "anonymous";
+          rawOriginalImage.src = safeRaw;
+        }
       }
-      if (state.cropScale) cropScale = state.cropScale;
-      if (state.cropX) cropX = state.cropX;
-      if (state.cropY) cropY = state.cropY;
-      if (state.cropRotation) cropRotation = state.cropRotation;
-      if (state.baseScale) baseScale = state.baseScale;
+      if (typeof state.cropScale === 'number') cropScale = state.cropScale;
+      if (typeof state.cropX === 'number') cropX = state.cropX;
+      if (typeof state.cropY === 'number') cropY = state.cropY;
+      if (typeof state.cropRotation === 'number') cropRotation = state.cropRotation;
+      if (typeof state.baseScale === 'number') baseScale = state.baseScale;
 
       // Education list
       if (Array.isArray(state.education)) {
-        educationList = JSON.parse(JSON.stringify(state.education));
+        educationList = state.education
+          .filter(item => item && typeof item === 'object')
+          .map(item => ({
+            title: String(item.title || ''),
+            inst: String(item.inst || ''),
+            year: String(item.year || ''),
+            desc: String(item.desc || '')
+          }));
         renderEducationEditor();
       }
 
@@ -1344,7 +1438,7 @@
       syncPresetUI(document.getElementById('preset-selector').value || 'dmlt');
 
       if (state.step) {
-        setStep(state.step);
+        setStep(Number(state.step) || 1);
       }
 
       updateResume();
@@ -1378,7 +1472,7 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(fallbackSnapshot));
             showSaveIndicator();
           } catch (err) {
-            console.warn("Storage quota exceeded", err);
+            console.warn("Storage quota exceeded");
           }
         }
       }, 250);
@@ -1545,6 +1639,7 @@
         otherBox.classList.add('hidden');
         document.getElementById('in-other-religion-val').value = '';
       }
+      syncReligionUI(val);
       updateResume();
       recordStateForHistory();
     }
@@ -1784,7 +1879,18 @@
       madhyamik:    { icon: '🏫', short: 'Madhyamik Fresher',       c1: '#10b981', c2: '#0d9488' }
     };
 
-    function presetGradient(meta) {
+    // Religion picker colours (modern, colorful chips)
+    const RELIGION_META = {
+      Hinduism:    { icon: '🕉️', c1: '#f97316', c2: '#f43f5e' },
+      Islam:       { icon: '☪️', c1: '#10b981', c2: '#059669' },
+      Christianity:{ icon: '✝️', c1: '#3b82f6', c2: '#6366f1' },
+      Sikhism:     { icon: '🌟', c1: '#eab308', c2: '#f59e0b' },
+      Buddhism:    { icon: '☸️', c1: '#84cc16', c2: '#22c55e' },
+      Jainism:     { icon: '🌿', c1: '#14b8a6', c2: '#06b6d4' },
+      Other:       { icon: '✨', c1: '#d946ef', c2: '#8b5cf6' }
+    };
+
+    function gradientOf(meta) {
       return `linear-gradient(135deg, ${meta.c1}, ${meta.c2})`;
     }
 
@@ -1792,9 +1898,20 @@
       return PRESET_META[key] || { icon: '⭐', short: 'Profile', c1: '#0ea5e9', c2: '#6366f1' };
     }
 
+    function getReligionMeta(key) {
+      return RELIGION_META[key] || RELIGION_META.Other;
+    }
+
+    // Closes every open colourful dropdown
+    function closeAllPickers() {
+      closePresetMenu();
+      closeReligionMenu();
+    }
+
     function togglePresetMenu() {
       const menu = document.getElementById('preset-menu');
       if (menu.classList.contains('hidden')) {
+        closeReligionMenu();
         openPresetMenu();
       } else {
         closePresetMenu();
@@ -1841,7 +1958,7 @@
 
         const badge = document.createElement('span');
         badge.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 shadow-md';
-        badge.style.background = presetGradient(meta);
+        badge.style.background = gradientOf(meta);
         badge.textContent = meta.icon;
 
         const text = document.createElement('span');
@@ -1872,13 +1989,105 @@
       trigger.style.borderColor = `${meta.c1}88`;
 
       const icon = document.getElementById('preset-trigger-icon');
-      icon.style.background = presetGradient(meta);
+      icon.style.background = gradientOf(meta);
       icon.textContent = meta.icon;
 
       document.getElementById('preset-trigger-title').textContent = meta.short;
       document.getElementById('preset-trigger-sub').textContent = opt.textContent;
 
       buildPresetMenu(opt.value);
+    }
+
+    // ================= COLORFUL RELIGION PICKER =================
+    function toggleReligionMenu() {
+      const menu = document.getElementById('religion-menu');
+      if (menu.classList.contains('hidden')) {
+        closePresetMenu();
+        openReligionMenu();
+      } else {
+        closeReligionMenu();
+      }
+    }
+
+    function openReligionMenu() {
+      document.getElementById('religion-menu').classList.remove('hidden');
+      document.getElementById('religion-trigger').setAttribute('aria-expanded', 'true');
+      document.getElementById('religion-chevron').style.transform = 'rotate(180deg)';
+    }
+
+    function closeReligionMenu() {
+      const menu = document.getElementById('religion-menu');
+      if (!menu) return;
+      menu.classList.add('hidden');
+      document.getElementById('religion-trigger').setAttribute('aria-expanded', 'false');
+      document.getElementById('religion-chevron').style.transform = 'rotate(0deg)';
+    }
+
+    function chooseReligion(val) {
+      document.getElementById('in-bio-religion-select').value = val;
+      closeReligionMenu();
+      handleReligionChange(val);
+    }
+
+    function buildReligionMenu(activeKey) {
+      const menu = document.getElementById('religion-menu');
+      const select = document.getElementById('in-bio-religion-select');
+      menu.textContent = '';
+
+      Array.from(select.options).forEach(opt => {
+        const meta = getReligionMeta(opt.value);
+        const isActive = opt.value === activeKey;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('role', 'option');
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.className = 'flex items-center gap-2 p-2 rounded-lg text-left transition hover:bg-white/10';
+        btn.style.background = isActive
+          ? `linear-gradient(120deg, ${meta.c1}3d, ${meta.c2}3d)`
+          : 'transparent';
+        btn.style.boxShadow = isActive ? `inset 0 0 0 1px ${meta.c1}aa` : 'none';
+
+        const badge = document.createElement('span');
+        badge.className = 'w-7 h-7 rounded-md flex items-center justify-center text-sm shrink-0 shadow';
+        badge.style.background = gradientOf(meta);
+        badge.textContent = meta.icon;
+
+        const text = document.createElement('span');
+        text.className = 'flex-1 min-w-0 text-[11px] leading-tight break-words ' + (isActive ? 'font-bold text-white' : 'font-medium text-slate-200');
+        text.textContent = opt.value === 'Other' ? 'Other' : opt.textContent;
+
+        btn.appendChild(badge);
+        btn.appendChild(text);
+        if (isActive) {
+          const tick = document.createElement('span');
+          tick.className = 'text-xs font-bold shrink-0';
+          tick.style.color = meta.c1;
+          tick.textContent = '✓';
+          btn.appendChild(tick);
+        }
+        btn.onclick = () => chooseReligion(opt.value);
+        menu.appendChild(btn);
+      });
+    }
+
+    function syncReligionUI(key) {
+      const select = document.getElementById('in-bio-religion-select');
+      if (!select || select.options.length === 0) return;
+      const opt = Array.from(select.options).find(o => o.value === key) || select.options[0];
+      const meta = getReligionMeta(opt.value);
+
+      const trigger = document.getElementById('religion-trigger');
+      trigger.className = 'w-full flex items-center gap-2.5 p-2 rounded-xl border shadow-md transition hover:brightness-110 active:scale-[0.99]';
+      trigger.style.background = `linear-gradient(120deg, ${meta.c1}2e, ${meta.c2}2e)`;
+      trigger.style.borderColor = `${meta.c1}88`;
+
+      const icon = document.getElementById('religion-trigger-icon');
+      icon.style.background = gradientOf(meta);
+      icon.textContent = meta.icon;
+
+      document.getElementById('religion-trigger-title').textContent = opt.textContent;
+      buildReligionMenu(opt.value);
     }
 
     // ================= PRESETS WITH WEST BENGAL FOCUS =================
@@ -2183,23 +2392,42 @@
 
     // ================= SECURE FILE UPLOAD PIPELINE =================
     function handleSecureFileUpload(e) {
-      const file = e.target.files[0];
+      const input = e.target;
+      const file = input.files && input.files[0];
       if (!file) return;
 
-      if (file.size > 20 * 1024 * 1024) {
-        alert("File size exceeds 20MB limit.");
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        alert("Please upload a PNG, JPEG or WEBP image.");
+        input.value = '';
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const imgUrl = evt.target.result;
-        rawOriginalImage = new Image();
-        rawOriginalImage.crossOrigin = "anonymous";
-        rawOriginalImage.onload = () => showCropModal();
-        rawOriginalImage.src = imgUrl;
-      };
-      reader.readAsDataURL(file);
+      if (file.size > 20 * 1024 * 1024) {
+        alert("File size exceeds 20MB limit.");
+        input.value = '';
+        return;
+      }
+
+      // Verify the real file signature, not just the file name or browser-reported type
+      file.slice(0, 12).arrayBuffer().then((buf) => {
+        if (!hasImageSignature(new Uint8Array(buf))) {
+          alert("This file is not a valid image.");
+          input.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const imgUrl = evt.target.result;
+          rawOriginalImage = new Image();
+          rawOriginalImage.crossOrigin = "anonymous";
+          rawOriginalImage.onload = () => showCropModal();
+          rawOriginalImage.src = imgUrl;
+        };
+        reader.readAsDataURL(file);
+      }).catch(() => {
+        alert("The image could not be read. Please try another file.");
+        input.value = '';
+      });
     }
 
     function openCropModal() {
@@ -2334,15 +2562,14 @@
         recordStateForHistory();
       } catch (err) {
         const avatarImg = document.getElementById('cv-avatar-img');
-        avatarImg.src = rawOriginalImage.src;
+        avatarImg.src = sanitizeImageSrc(rawOriginalImage.src, DEFAULT_AVATAR);
         closeCropModal();
         recordStateForHistory();
       }
     }
 
     function resetPhoto() {
-      const placeholder = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2364748b"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
-      document.getElementById('cv-avatar-img').src = placeholder;
+      document.getElementById('cv-avatar-img').src = PLACEHOLDER_AVATAR;
       rawOriginalImage = new Image();
       document.getElementById('photo-file').value = '';
       recordStateForHistory();
@@ -2524,6 +2751,26 @@
       }
     }
 
+    // Builds the clear (✕) and open (▼) buttons for an education combo field, using DOM APIs only
+    function buildComboButtons(container, inputId, list) {
+      const clearBtn = document.createElement('button');
+      clearBtn.type = 'button';
+      clearBtn.className = 'text-slate-400 hover:text-white px-1 text-xs';
+      clearBtn.textContent = '✕';
+      clearBtn.setAttribute('aria-label', 'Clear');
+      clearBtn.onclick = () => clearField(inputId);
+
+      const openBtn = document.createElement('button');
+      openBtn.type = 'button';
+      openBtn.className = 'text-slate-400 hover:text-cyan-400 px-1 text-xs';
+      openBtn.textContent = '▼';
+      openBtn.setAttribute('aria-label', 'Open list');
+      openBtn.onclick = () => toggleFloatingCombo(inputId, list);
+
+      container.appendChild(clearBtn);
+      container.appendChild(openBtn);
+    }
+
     window.addEventListener('mousedown', (e) => {
       const popover = document.getElementById('global-combo-popover');
       if (popover.classList.contains('hidden')) return;
@@ -2537,12 +2784,12 @@
       }
     }, true);
 
-    // Close the profile menu when clicking anywhere outside it
+    // Close colourful pickers when clicking anywhere outside them
     document.addEventListener('mousedown', (e) => {
-      const wrap = document.getElementById('preset-wrapper');
-      if (wrap && !wrap.contains(e.target)) {
-        closePresetMenu();
-      }
+      const presetWrap = document.getElementById('preset-wrapper');
+      if (presetWrap && !presetWrap.contains(e.target)) closePresetMenu();
+      const religionWrap = document.getElementById('religion-wrapper');
+      if (religionWrap && !religionWrap.contains(e.target)) closeReligionMenu();
     });
 
     window.addEventListener('keydown', (e) => {
@@ -2550,7 +2797,7 @@
         closeFloatingCombo();
         closeCalendarModal();
         closeFormatModal();
-        closePresetMenu();
+        closeAllPickers();
       }
     });
 
@@ -2690,6 +2937,7 @@
         topLabel.className = "text-[10px] font-bold text-cyan-400 uppercase tracking-wider";
         topLabel.textContent = `Qualification #${index + 1}`;
         const delBtn = document.createElement('button');
+        delBtn.type = 'button';
         delBtn.className = "text-[10px] text-red-400 hover:text-red-300 font-bold transition";
         delBtn.textContent = "✕ Delete";
         delBtn.onclick = () => deleteEducationCard(index);
@@ -2701,6 +2949,7 @@
         const degWrapper = document.createElement('div');
         degWrapper.className = "relative";
         const degLabel = document.createElement('label');
+        degLabel.htmlFor = degInputId;
         degLabel.className = "block text-[9.5px] font-semibold text-slate-400 mb-0.5";
         degLabel.textContent = "Degree / Examination";
         const degInner = document.createElement('div');
@@ -2711,6 +2960,7 @@
         degInput.value = item.title;
         degInput.placeholder = "Select or Type Degree...";
         degInput.autocomplete = "off";
+        degInput.maxLength = 150;
         degInput.className = "w-full bg-slate-800/90 border border-slate-700 text-white p-2 pr-12 rounded-lg text-xs focus:border-cyan-400 outline-none transition";
         degInput.onfocus = () => openFloatingCombo(degInputId, degreeList);
         degInput.onclick = () => openFloatingCombo(degInputId, degreeList);
@@ -2720,10 +2970,7 @@
         };
         const degBtnBox = document.createElement('div');
         degBtnBox.className = "absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1";
-        degBtnBox.innerHTML = `
-          <button type="button" onclick="clearField('${degInputId}')" class="text-slate-400 hover:text-white px-1 text-xs">✕</button>
-          <button type="button" onclick="toggleFloatingCombo('${degInputId}', degreeList)" class="text-slate-400 hover:text-cyan-400 px-1 text-xs">▼</button>
-        `;
+        buildComboButtons(degBtnBox, degInputId, degreeList);
         degInner.appendChild(degInput);
         degInner.appendChild(degBtnBox);
         degWrapper.appendChild(degLabel);
@@ -2738,6 +2985,7 @@
         const boardCol = document.createElement('div');
         boardCol.className = "relative";
         const boardLabel = document.createElement('label');
+        boardLabel.htmlFor = instInputId;
         boardLabel.className = "block text-[9.5px] font-semibold text-cyan-400 mb-0.5";
         boardLabel.textContent = "Board / University";
         const boardInner = document.createElement('div');
@@ -2748,6 +2996,7 @@
         boardInput.value = item.inst;
         boardInput.placeholder = "Select or Type Board...";
         boardInput.autocomplete = "off";
+        boardInput.maxLength = 150;
         boardInput.className = "w-full bg-slate-800/90 border border-slate-700 text-white p-2 pr-12 rounded-lg text-xs focus:border-cyan-400 outline-none font-medium transition";
         boardInput.onfocus = () => openFloatingCombo(instInputId, boardList);
         boardInput.onclick = () => openFloatingCombo(instInputId, boardList);
@@ -2757,10 +3006,7 @@
         };
         const boardBtnBox = document.createElement('div');
         boardBtnBox.className = "absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1";
-        boardBtnBox.innerHTML = `
-          <button type="button" onclick="clearField('${instInputId}')" class="text-slate-400 hover:text-white px-1 text-xs">✕</button>
-          <button type="button" onclick="toggleFloatingCombo('${instInputId}', boardList)" class="text-slate-400 hover:text-cyan-400 px-1 text-xs">▼</button>
-        `;
+        buildComboButtons(boardBtnBox, instInputId, boardList);
         boardInner.appendChild(boardInput);
         boardInner.appendChild(boardBtnBox);
         boardCol.appendChild(boardLabel);
@@ -2771,6 +3017,7 @@
         const yearCol = document.createElement('div');
         yearCol.className = "relative";
         const yearLabel = document.createElement('label');
+        yearLabel.htmlFor = yrInputId;
         yearLabel.className = "block text-[9.5px] font-semibold text-slate-400 mb-0.5";
         yearLabel.textContent = "Year / Passing Status";
         const yearInner = document.createElement('div');
@@ -2781,6 +3028,7 @@
         yearInput.value = item.year;
         yearInput.placeholder = "Select or Type Year...";
         yearInput.autocomplete = "off";
+        yearInput.maxLength = 60;
         yearInput.className = "w-full bg-slate-800/90 border border-slate-700 text-white p-2 pr-12 rounded-lg text-xs focus:border-cyan-400 outline-none transition";
         yearInput.onfocus = () => openFloatingCombo(yrInputId, yearList);
         yearInput.onclick = () => openFloatingCombo(yrInputId, yearList);
@@ -2790,10 +3038,7 @@
         };
         const yearBtnBox = document.createElement('div');
         yearBtnBox.className = "absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1";
-        yearBtnBox.innerHTML = `
-          <button type="button" onclick="clearField('${yrInputId}')" class="text-slate-400 hover:text-white px-1 text-xs">✕</button>
-          <button type="button" onclick="toggleFloatingCombo('${yrInputId}', yearList)" class="text-slate-400 hover:text-cyan-400 px-1 text-xs">▼</button>
-        `;
+        buildComboButtons(yearBtnBox, yrInputId, yearList);
         yearInner.appendChild(yearInput);
         yearInner.appendChild(yearBtnBox);
         yearCol.appendChild(yearLabel);
@@ -2810,6 +3055,7 @@
         streamInput.type = "text";
         streamInput.value = item.desc || '';
         streamInput.placeholder = "e.g. Science / First Class / Regular";
+        streamInput.maxLength = 150;
         streamInput.className = "w-full bg-slate-800/90 border border-slate-700 text-slate-300 p-2 rounded-lg text-[11px] focus:border-cyan-400 outline-none transition";
         streamInput.oninput = (e) => updateEduItem(index, 'desc', e.target.value);
         streamWrapper.appendChild(streamLabel);
@@ -2892,9 +3138,11 @@
       document.getElementById('in-other-marital-val').value = '';
 
       // Religion
-      document.getElementById('in-bio-religion-select').value = data.religion || 'Hinduism';
+      const rel = data.religion || 'Hinduism';
+      document.getElementById('in-bio-religion-select').value = rel;
       document.getElementById('wrapper-other-religion').classList.add('hidden');
       document.getElementById('in-other-religion-val').value = '';
+      syncReligionUI(rel);
 
       document.getElementById('in-bio-nation').value = data.nation;
       document.getElementById('in-bio-lang').value = data.languages;
@@ -3083,17 +3331,23 @@
     window.onload = () => {
       initCalendarYearSelect();
       setCurrentDate();
+      syncReligionUI(document.getElementById('in-bio-religion-select').value);
 
-      const savedState = localStorage.getItem(STORAGE_KEY);
-      if (savedState) {
-        try {
+      let loaded = false;
+      try {
+        const savedState = localStorage.getItem(STORAGE_KEY);
+        if (savedState) {
           const parsed = JSON.parse(savedState);
-          applyStateToForm(parsed);
-          undoStack.push(parsed);
-        } catch (e) {
-          loadPreset('dmlt');
+          if (parsed && typeof parsed === 'object') {
+            applyStateToForm(parsed);
+            undoStack.push(parsed);
+            loaded = true;
+          }
         }
-      } else {
+      } catch (e) {
+        loaded = false;
+      }
+      if (!loaded) {
         loadPreset('dmlt');
       }
       updateUndoRedoButtonState();
