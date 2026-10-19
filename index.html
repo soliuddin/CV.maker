@@ -6,9 +6,10 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
-  
+
   <title>BengalProCV - Professional Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -76,11 +77,15 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #0ea5e9;
     }
+
+    #preset-menu::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 h-screen overflow-hidden select-none">
 
-  <!-- ================= MULTI-FORMAT DOWNLOAD SELECTION MODAL ================= -->
+  <!-- ================= PDF EXPORT & EXACT SIZE STUDIO ================= -->
   <div id="format-selection-modal" class="fixed inset-0 z-[10000] bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 select-auto">
     <div class="bg-slate-900 border border-cyan-500/40 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4 text-white">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -88,89 +93,58 @@
           <h3 class="font-bold text-base tracking-wide text-white uppercase flex items-center gap-2">
             <span>📥</span> Export & Exact Size Studio
           </h3>
-          <p class="text-[11px] text-slate-400 mt-0.5" id="modal-subtitle">Select your preferred file format for download</p>
+          <p class="text-[11px] text-slate-400 mt-0.5" id="modal-subtitle">Select PDF to continue</p>
         </div>
-        <button onclick="closeFormatModal()" class="text-slate-400 hover:text-white text-lg px-2 py-1">✕</button>
+        <button type="button" onclick="closeFormatModal()" class="text-slate-400 hover:text-white text-lg px-2 py-1">✕</button>
       </div>
 
-      <!-- STEP 1: FORMAT SELECTION GRID -->
+      <!-- STEP 1: PDF ONLY -->
       <div id="export-view-formats" class="space-y-3">
-        <div class="grid grid-cols-2 gap-3 text-xs">
-          <button type="button" onclick="selectExportFormat('pdf')" class="p-3 rounded-xl bg-slate-800/90 hover:bg-cyan-600/20 border border-slate-700 hover:border-cyan-400 flex flex-col items-center text-center gap-1.5 transition group">
-            <span class="text-xl">📄</span>
-            <div>
-              <span class="font-bold block text-white group-hover:text-cyan-300">PDF Document</span>
-              <span class="text-[9.5px] text-slate-400">Standard PDF Format</span>
-            </div>
-          </button>
-
-          <button type="button" onclick="selectExportFormat('docx')" class="p-3 rounded-xl bg-slate-800/90 hover:bg-cyan-600/20 border border-slate-700 hover:border-cyan-400 flex flex-col items-center text-center gap-1.5 transition group">
-            <span class="text-xl">📝</span>
-            <div>
-              <span class="font-bold block text-white group-hover:text-cyan-300">MS Word (.docx)</span>
-              <span class="text-[9.5px] text-slate-400">OpenXML Word Document</span>
-            </div>
-          </button>
-
-          <button type="button" onclick="selectExportFormat('doc')" class="p-3 rounded-xl bg-slate-800/90 hover:bg-cyan-600/20 border border-slate-700 hover:border-cyan-400 flex flex-col items-center text-center gap-1.5 transition group">
-            <span class="text-xl">📋</span>
-            <div>
-              <span class="font-bold block text-white group-hover:text-cyan-300">MS Word (.doc)</span>
-              <span class="text-[9.5px] text-slate-400">Classic Word Document</span>
-            </div>
-          </button>
-
-          <button type="button" onclick="selectExportFormat('html')" class="p-3 rounded-xl bg-slate-800/90 hover:bg-cyan-600/20 border border-slate-700 hover:border-cyan-400 flex flex-col items-center text-center gap-1.5 transition group">
-            <span class="text-xl">🌐</span>
-            <div>
-              <span class="font-bold block text-white group-hover:text-cyan-300">HTML Webpage</span>
-              <span class="text-[9.5px] text-slate-400">Standalone Web File</span>
-            </div>
-          </button>
-
-          <button type="button" onclick="selectExportFormat('txt')" class="p-3 col-span-2 rounded-xl bg-slate-800/90 hover:bg-cyan-600/20 border border-slate-700 hover:border-cyan-400 flex items-center justify-center gap-3 transition group">
-            <span class="text-xl">🔤</span>
-            <div class="text-left">
-              <span class="font-bold block text-white group-hover:text-cyan-300">Plain Text Summary (.txt)</span>
-              <span class="text-[9.5px] text-slate-400">Raw text format for quick sharing</span>
-            </div>
-          </button>
-        </div>
+        <button type="button" onclick="selectExportFormat()" class="w-full p-4 rounded-xl bg-gradient-to-r from-rose-500/15 via-fuchsia-500/10 to-cyan-500/15 hover:from-rose-500/25 hover:to-cyan-500/25 border border-slate-700 hover:border-cyan-400 flex items-center gap-4 transition group">
+          <span class="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-fuchsia-600 flex items-center justify-center text-2xl shadow-lg">📄</span>
+          <div class="text-left">
+            <span class="font-bold block text-white text-sm group-hover:text-cyan-300">PDF Document</span>
+            <span class="text-[10.5px] text-slate-400">A4 print-ready PDF with your exact file size</span>
+          </div>
+        </button>
       </div>
 
-      <!-- STEP 2: CUSTOM FILENAME & EXACT FILE SIZE CONFIG (Appears AFTER format selection) -->
+      <!-- STEP 2: CUSTOM FILENAME & EXACT FILE SIZE -->
       <div id="export-view-config" class="space-y-4 hidden text-xs">
         <div class="flex items-center gap-2 bg-cyan-950/40 p-2.5 rounded-xl border border-cyan-500/30 text-cyan-300 font-semibold">
-          <span id="selected-format-icon" class="text-base">📄</span>
-          <span>Selected Format: <span id="selected-format-name" class="uppercase font-mono text-white">PDF</span></span>
+          <span class="text-base">📄</span>
+          <span>Selected Format: <span class="uppercase font-mono text-white">PDF (A4)</span></span>
         </div>
 
         <div class="space-y-3 bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 shadow-inner">
           <div>
             <label class="block font-bold text-cyan-400 uppercase text-[10px] mb-1">Custom Document Name:</label>
-            <input type="text" id="custom-filename-input" placeholder="e.g. Rahul_Das_CV" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-medium">
+            <input type="text" id="custom-filename-input" placeholder="e.g. Rahul_Das_CV" maxlength="80" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-medium">
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="block font-bold text-slate-300 uppercase text-[10px] mb-1">Target Exact Size:</label>
-              <input type="number" id="custom-size-value" value="250" min="1" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-mono">
+              <input type="number" id="custom-size-value" value="250" min="0.01" step="any" oninput="updateExportPreview()" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-mono">
             </div>
             <div>
               <label class="block font-bold text-slate-300 uppercase text-[10px] mb-1">Unit (KB / MB):</label>
-              <select id="custom-size-unit" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-semibold cursor-pointer">
+              <select id="custom-size-unit" onchange="updateExportPreview()" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded-lg outline-none focus:border-cyan-400 text-xs font-semibold cursor-pointer">
                 <option value="KB" selected>KB (Kilobytes)</option>
                 <option value="MB">MB (Megabytes)</option>
               </select>
             </div>
           </div>
-          <p class="text-[9.5px] text-slate-400 italic">Note: The downloaded file will be padded to match 100% exactly with your requested file size.</p>
+          <p id="export-size-preview" class="text-[10.5px] text-cyan-300 font-mono font-semibold"></p>
+          <p class="text-[9.5px] text-slate-400 italic">The PDF is generated at exactly this size (1 KB = 1024 bytes). If the size is too small for the CV, you will be asked to enter a larger value.</p>
         </div>
+
+        <div id="export-error" class="hidden p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-200 text-[11px] leading-relaxed"></div>
 
         <div class="flex items-center justify-between pt-2 border-t border-slate-800">
           <button type="button" onclick="backToFormats()" class="px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-lg border border-slate-700 hover:bg-slate-800 transition">← Back</button>
-          <button type="button" onclick="executeFinalExport()" class="px-5 py-2 text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow transition flex items-center gap-1.5">
-            <span>Download Document</span>
+          <button type="button" id="export-download-btn" onclick="executeFinalExport()" class="px-5 py-2 text-xs font-bold text-white bg-gradient-to-r from-rose-500 to-fuchsia-600 hover:from-rose-400 hover:to-fuchsia-500 rounded-lg shadow-lg transition flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-wait">
+            <span id="export-download-label">Download PDF</span>
             <span>📥</span>
           </button>
         </div>
@@ -277,7 +251,7 @@
 
     <!-- ================= LEFT: BUILDER CONSOLE ================= -->
     <aside class="wizard-ui w-full xl:w-[490px] bg-[#09111e] text-white flex flex-col h-full shrink-0 shadow-2xl z-20 border-r border-slate-800/80">
-      
+
       <!-- Top Fixed Bar with Signature Badge & Controls -->
       <div class="p-4 pb-3 border-b border-slate-800 bg-[#09111e] shrink-0 space-y-2.5">
         <div class="flex items-center justify-between">
@@ -305,11 +279,13 @@
           </div>
         </div>
 
-        <!-- Student Profile Preset Switcher with Styled Instant Reset Button -->
+        <!-- Student Profile Picker (colorful) with Instant Reset Button -->
         <div class="p-2.5 bg-slate-900/90 rounded-xl border border-slate-800 shadow-inner flex items-end justify-between gap-2.5">
-          <div class="flex-1">
+          <div class="flex-1 relative" id="preset-wrapper">
             <label class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">⚡ Select Student Profile (West Bengal):</label>
-            <select id="preset-selector" onchange="loadPreset(this.value)" class="w-full bg-slate-800/90 border border-slate-700 text-xs text-white p-2 rounded-lg outline-none focus:border-cyan-400 font-medium transition cursor-pointer">
+
+            <!-- Native select kept as the data source (hidden) -->
+            <select id="preset-selector" class="hidden" aria-hidden="true" tabindex="-1" onchange="loadPreset(this.value)">
               <option value="dmlt">1. DMLT Student (Admitted under SMFWB Paramedical)</option>
               <option value="graduate">2. Graduation Completed (B.A. / B.Sc. / B.Com Passed Out)</option>
               <option value="grad_ongoing">3. Graduation Ongoing (Currently in College / CBCS Semester)</option>
@@ -318,8 +294,22 @@
               <option value="hs_commerce">6. Higher Secondary (10+2 WBCHSE Commerce Pass Out)</option>
               <option value="madhyamik">7. Madhyamik (10th WBBSE Pass Out Fresher)</option>
             </select>
+
+            <!-- Colorful trigger -->
+            <button type="button" id="preset-trigger" onclick="togglePresetMenu()" aria-haspopup="listbox" aria-expanded="false"
+              class="w-full flex items-center gap-2.5 p-2 rounded-xl border shadow-lg transition hover:brightness-110 active:scale-[0.99]">
+              <span id="preset-trigger-icon" class="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 shadow-md"></span>
+              <span class="flex-1 min-w-0 text-left">
+                <span id="preset-trigger-title" class="block text-xs font-bold text-white truncate"></span>
+                <span id="preset-trigger-sub" class="block text-[10px] text-slate-300/80 truncate"></span>
+              </span>
+              <span id="preset-chevron" class="text-slate-200 text-xs transition-transform duration-200">▾</span>
+            </button>
+
+            <!-- Colorful menu -->
+            <div id="preset-menu" role="listbox" class="hidden absolute left-0 right-0 top-full mt-1.5 z-[300] bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl p-1.5 max-h-80 overflow-y-auto space-y-1"></div>
           </div>
-          
+
           <!-- Badge-Style Instant Reset Button -->
           <button type="button" onclick="resetToInitialPreset()" title="Reset everything to default, revert photo, and go to Step 1" class="h-9 px-3 rounded-lg bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500 hover:border-rose-500 text-rose-300 hover:text-white font-semibold text-xs transition-all duration-200 flex items-center gap-1.5 shadow-sm active:scale-95 shrink-0">
             <span class="text-sm">↺</span>
@@ -338,7 +328,7 @@
 
       <!-- Scrollable Form Area with Arrow Key Navigation Support -->
       <div id="form-scroll-area" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
-        
+
         <!-- STEP 1: IDENTITY & CONTACT -->
         <div id="step-pane-1" class="space-y-3">
           <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2">
@@ -412,13 +402,13 @@
         <!-- STEP 2: PERSONAL BIO-DATA -->
         <div id="step-pane-2" class="space-y-3.5 hidden">
           <p class="text-slate-400 text-[11px]">Personal background details for formal West Bengal employment criteria:</p>
-          
+
           <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="block font-bold text-slate-400 uppercase text-[10px]">Father's Name</label>
               <input type="text" id="in-bio-father" maxlength="60" class="w-full mt-1 bg-slate-900 border border-slate-700 text-white p-2 rounded-lg focus:border-cyan-400 outline-none transition">
             </div>
-            
+
             <div>
               <label class="block font-bold text-cyan-400 uppercase text-[10px]">Date of Birth</label>
               <button type="button" onclick="openCalendarModal()" id="btn-calendar-display" class="w-full mt-1 bg-slate-800/90 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400 text-white p-2 rounded-lg text-left text-xs font-semibold flex items-center justify-between transition shadow-sm">
@@ -438,7 +428,7 @@
               <button type="button" onclick="setGenderPill('Other', this)" class="pill-gender py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Other</button>
             </div>
             <input type="hidden" id="in-bio-gender" value="Male">
-            
+
             <div id="wrapper-other-gender" class="hidden mt-2">
               <label class="block font-semibold text-cyan-400 text-[10px] mb-0.5">Specify Gender:</label>
               <input type="text" id="in-other-gender-val" placeholder="Type gender identity..." oninput="updateOtherGender(this.value)" class="w-full bg-slate-800/90 border border-cyan-500/60 text-white p-2 rounded-lg text-xs outline-none">
@@ -595,7 +585,7 @@
 
         <!-- STEP 4: SKILLS & BIO (PROFILE SYNCHRONIZED) -->
         <div id="step-pane-4" class="space-y-4 hidden">
-          
+
           <!-- PRIMARY COMPETENCY -->
           <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 space-y-2.5 shadow-sm">
             <div class="flex items-center justify-between">
@@ -654,7 +644,7 @@
 
           <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl text-slate-400 text-xs flex items-center gap-2">
             <span class="text-cyan-400 text-base">ℹ</span>
-            <span>Review your CV on the right. When satisfied, click <b>"Print / Save as PDF"</b>.</span>
+            <span>Review your CV on the right. When satisfied, click <b>"Export PDF"</b>.</span>
           </div>
         </div>
 
@@ -680,13 +670,13 @@
 
     <!-- ================= RIGHT: HIGH-FIDELITY A4 CURRICULUM VITAE ================= -->
     <section id="print-wrapper" class="flex-1 p-2 md:p-6 flex justify-center items-start overflow-y-auto bg-slate-900/60 h-full">
-      
+
       <div id="cv-document" class="w-[210mm] h-[297mm] max-h-[297mm] min-h-[297mm] bg-white shadow-2xl flex overflow-hidden text-slate-900 box-border relative">
-        
+
         <!-- LEFT COLUMN: DEEP NAVY (31% width) -->
         <div class="w-[31%] bg-[#0d1b2a] text-white px-5 py-6 flex flex-col justify-between shrink-0 box-border border-r border-slate-800">
           <div class="space-y-5">
-            
+
             <div id="cv-photo-box" class="flex flex-col items-center">
               <div class="w-32 h-32 rounded-full border-2 border-cyan-400/80 p-0.5 shadow-xl bg-slate-900 flex items-center justify-center overflow-hidden">
                 <img id="cv-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Candidate" class="w-full h-full rounded-full object-cover">
@@ -699,7 +689,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
                 <h3 class="text-[10px] font-bold uppercase tracking-widest text-cyan-300">Contact Details</h3>
               </div>
-              
+
               <div class="space-y-1.5 text-[10.5px] text-slate-300 leading-snug">
                 <div class="flex items-start gap-2">
                   <span class="text-cyan-400 text-xs mt-0.5">📞</span>
@@ -748,15 +738,15 @@
           </div>
 
           <div class="pt-2 border-t border-slate-800 text-[8.5px] text-slate-400 uppercase tracking-widest font-mono text-center">
-            Employment Curriculum Vitae[cite: 1]
+            Employment Curriculum Vitae
           </div>
         </div>
 
         <!-- RIGHT COLUMN: BALANCED EXECUTIVE BODY (69% width) -->
         <div class="w-[69%] px-7 py-6 flex flex-col justify-between box-border">
-          
+
           <div class="space-y-4">
-            
+
             <!-- Header Section -->
             <div class="border-b-2 border-slate-900 pb-2.5">
               <h1 class="text-2xl font-black uppercase tracking-tight text-slate-900 leading-none">
@@ -822,7 +812,7 @@
           <!-- Declaration & Signature Block -->
           <div class="pt-2 border-t border-slate-300 text-[9px] text-slate-600 space-y-1.5">
             <p class="italic" id="cv-declaration-text">"I hereby declare that all the information furnished above is authentic, correct, and complete to the best of my knowledge and belief."</p>
-            
+
             <div class="flex justify-between items-end pt-1">
               <div>
                 <p><span class="font-bold text-slate-800">Place:</span> <span id="cv-sign-place"></span></p>
@@ -855,19 +845,23 @@
       }
     }
 
-    // ================= MULTI-FORMAT EXPORT ENGINE WITH 2-STEP MODAL =================
-    let chosenFormat = 'pdf';
+    // ================= PDF EXPORT & EXACT SIZE ENGINE =================
+    const EXPORT_MIN_BYTES = 1024;
+    const EXPORT_MAX_BYTES = 50 * 1024 * 1024;
+    const PDF_PAGE_W = 595.28; // A4 width in points
+    const PDF_PAGE_H = 841.89; // A4 height in points
 
     function openFormatModal() {
-      const fn = document.getElementById('in-fn').value || 'Candidate';
-      const ln = document.getElementById('in-ln').value || 'Resume';
+      const fn = document.getElementById('in-fn').value.trim() || 'Candidate';
+      const ln = document.getElementById('in-ln').value.trim() || 'Resume';
       document.getElementById('custom-filename-input').value = `${fn}_${ln}_CV`;
-      
-      // Reset modal view to Step 1 (formats)
+
       document.getElementById('export-view-formats').classList.remove('hidden');
       document.getElementById('export-view-config').classList.add('hidden');
-      document.getElementById('modal-subtitle').textContent = "Select your preferred file format for download";
+      document.getElementById('modal-subtitle').textContent = "Select PDF to continue";
       document.getElementById('export-modal-cancel-footer').classList.remove('hidden');
+      hideExportError();
+      updateExportPreview();
 
       document.getElementById('format-selection-modal').classList.remove('hidden');
     }
@@ -876,252 +870,270 @@
       document.getElementById('format-selection-modal').classList.add('hidden');
     }
 
-    function selectExportFormat(format) {
-      chosenFormat = format;
-      const icons = { pdf: '📄', docx: '📝', doc: '📋', html: '🌐', txt: '🔤' };
-      const names = { pdf: 'PDF Document (.pdf)', docx: 'MS Word OpenXML (.docx)', doc: 'Classic MS Word (.doc)', html: 'HTML Webpage (.html)', txt: 'Plain Text Summary (.txt)' };
-
-      document.getElementById('selected-format-icon').textContent = icons[format] || '📄';
-      document.getElementById('selected-format-name').textContent = names[format] || format;
-
-      // Switch to Step 2 (configuration)
+    function selectExportFormat() {
       document.getElementById('export-view-formats').classList.add('hidden');
       document.getElementById('export-view-config').classList.remove('hidden');
-      document.getElementById('modal-subtitle').textContent = "Configure custom name and exact target file size";
+      document.getElementById('modal-subtitle').textContent = "Enter a custom name and the exact file size";
       document.getElementById('export-modal-cancel-footer').classList.add('hidden');
+      hideExportError();
+      updateExportPreview();
     }
 
     function backToFormats() {
       document.getElementById('export-view-config').classList.add('hidden');
       document.getElementById('export-view-formats').classList.remove('hidden');
-      document.getElementById('modal-subtitle').textContent = "Select your preferred file format for download";
-      document.getElementById('export-modal-cancel-footer').classList.add('hidden');
+      document.getElementById('modal-subtitle').textContent = "Select PDF to continue";
+      document.getElementById('export-modal-cancel-footer').classList.remove('hidden');
+      hideExportError();
     }
 
-    function createExactSizeBlob(contentString, mimeType, sizeVal, unit) {
-      const targetBytes = Math.round(sizeVal * (unit === 'MB' ? 1024 * 1024 : 1024));
-      const encoder = new TextEncoder();
-      let contentBytes = encoder.encode(contentString);
-
-      let finalBytes;
-      if (contentBytes.length === targetBytes) {
-        finalBytes = contentBytes;
-      } else if (contentBytes.length > targetBytes) {
-        finalBytes = contentBytes.slice(0, targetBytes);
-      } else {
-        finalBytes = new Uint8Array(targetBytes);
-        finalBytes.set(contentBytes, 0);
-        for (let i = contentBytes.length; i < targetBytes; i++) {
-          finalBytes[i] = 32; // Pad with spaces to match exact target file size in KB/MB
-        }
-      }
-      return new Blob([finalBytes], { type: mimeType });
-    }
-
-    function executeFinalExport() {
-      const customName = document.getElementById('custom-filename-input').value.trim() || 'Candidate_Resume';
-      const sizeVal = parseFloat(document.getElementById('custom-size-value').value) || 250;
+    function getTargetBytes() {
+      const raw = parseFloat(document.getElementById('custom-size-value').value);
       const unit = document.getElementById('custom-size-unit').value;
-      closeFormatModal();
-
-      const extMap = { pdf: 'pdf', docx: 'docx', doc: 'doc', html: 'html', txt: 'txt' };
-      const ext = extMap[chosenFormat] || 'txt';
-      const baseName = customName.replace(/\.[^/.]+$/, "");
-      const filename = `${baseName}.${ext}`;
-
-      // Build unified professional HTML layout matching PDF theme for all formats (PDF, DOCX, DOC, HTML)
-      const avatarSrc = document.getElementById('cv-avatar-img').src;
-      const phone = document.getElementById('in-phone').value;
-      const email = document.getElementById('in-email').value;
-      const loc = document.getElementById('in-loc').value;
-      const pin = document.getElementById('in-pin').value;
-      const locationStr = `${loc} ${pin ? '- ' + pin : ''}`.trim();
-      
-      const skill1Head = document.getElementById('in-skill1-title').value;
-      const skills1Items = document.getElementById('in-skills-1').value.split('\n').filter(Boolean);
-      const skill2Head = document.getElementById('in-skill2-title').value;
-      const skills2Items = document.getElementById('in-skills-2').value.split('\n').filter(Boolean);
-
-      const firstName = document.getElementById('in-fn').value;
-      const lastName = document.getElementById('in-ln').value;
-      const role = document.getElementById('in-role').value;
-      const summary = document.getElementById('in-summary').value;
-      
-      const educationRows = educationList.map(item => `
-        <tr>
-          <td style="border: 1px solid #cbd5e1; padding: 6px 10px; font-size: 9.5pt;">
-            <strong>${item.title}</strong>${item.desc ? '<br/><span style="font-size: 8.5pt; color: #64748b;">' + item.desc + '</span>' : ''}
-          </td>
-          <td style="border: 1px solid #cbd5e1; padding: 6px 10px; font-size: 9.5pt; color: #334155;">${item.inst}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 6px 10px; font-size: 9.5pt; text-align: center; white-space: nowrap; color: #1e3a8a;"><strong>${item.year}</strong></td>
-        </tr>
-      `).join('');
-
-      const highlightsItems = document.getElementById('in-highlights').value.split('\n').filter(Boolean);
-
-      const bioFather = document.getElementById('in-bio-father').value;
-      const bioDob = formatBirthDate(document.getElementById('in-bio-dob').value);
-      const bioGender = document.getElementById('in-other-gender-val').value.trim() || document.getElementById('in-bio-gender').value;
-      const bioMarital = document.getElementById('in-other-marital-val').value.trim() || document.getElementById('in-bio-marital').value;
-      const relSelect = document.getElementById('in-bio-religion-select').value;
-      const otherRel = document.getElementById('in-other-religion-val').value.trim();
-      const bioReligion = (relSelect === 'Other' && otherRel) ? otherRel : relSelect;
-      const bioNation = document.getElementById('in-bio-nation').value;
-      const bioLang = document.getElementById('in-bio-lang').value;
-
-      const signPlace = loc.split(',')[0].trim() || 'Kolkata';
-      const currentDate = document.getElementById('cv-current-date').textContent;
-      const signature = `${firstName} ${lastName}`.trim();
-
-      const professionalDocHtml = `
-        <!DOCTYPE html>
-        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-        <head>
-          <meta charset="utf-8">
-          <title>${baseName}</title>
-          <!--[if gte mso 9]>
-          <xml>
-           <w:WordDocument>
-            <w:View>Print</w:View>
-            <w:Zoom>100</w:Zoom>
-            <w:DoNotOptimizeForBrowser/>
-           </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page { size: A4 portrait; margin: 0; }
-            body { font-family: 'Calibri', 'Arial', sans-serif; color: #1e293b; font-size: 10pt; margin: 0; padding: 0; background: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            table.a4-page { width: 210mm; height: 297mm; border-collapse: collapse; table-layout: fixed; background-color: #ffffff; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-            td.sidebar { width: 65mm; background-color: #0d1b2a; color: #ffffff; vertical-align: top; padding: 20mm 6mm 15mm 8mm; height: 297mm; mso-yfti-rowspan: 1; }
-            td.content-body { width: 145mm; background-color: #ffffff; color: #1e293b; vertical-align: top; padding: 20mm 10mm 15mm 10mm; height: 297mm; mso-yfti-rowspan: 1; }
-            h1 { font-size: 20pt; font-weight: bold; text-transform: uppercase; margin: 0 0 4px 0; color: #0f172a; line-height: 1.1; }
-            h2 { font-size: 10.5pt; font-weight: bold; text-transform: uppercase; margin: 14px 0 5px 0; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; color: #0f172a; }
-            h3.sidebar-title { font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 3px; margin: 14px 0 6px 0; }
-            p { margin: 0 0 6px 0; line-height: 1.35; }
-            ul { margin: 0; padding-left: 14px; }
-            li { margin-bottom: 4px; font-size: 9pt; color: #334155; }
-            .sidebar li { color: #e2e8f0; font-size: 8.5pt; }
-            table.data-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-            table.data-table th { background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 8px; font-size: 8.5pt; text-transform: uppercase; text-align: left; color: #0f172a; }
-          </style>
-        </head>
-        <body>
-          <table class="a4-page" cellspacing="0" cellpadding="0" style="width: 210mm; height: 297mm; border-collapse: collapse; table-layout: fixed; background-color: #ffffff;">
-            <tr>
-              <td class="sidebar" bgcolor="#0d1b2a" width="65mm" style="width: 65mm; background-color: #0d1b2a; color: #ffffff; height: 297mm; vertical-align: top; padding: 20mm 6mm 15mm 8mm;">
-                <div style="text-align: center; margin-bottom: 18px;">
-                  <img src="${avatarSrc}" width="105" height="105" style="border-radius: 50%; border: 2px solid #38bdf8; display: block; margin: 0 auto; object-fit: cover;" />
-                </div>
-
-                <h3 class="sidebar-title">Contact Details</h3>
-                <p style="font-size: 9pt; margin-bottom: 8px; color: #cbd5e1;"><strong>Mobile Phone:</strong><br/><span style="color: #ffffff; font-weight: bold;">${phone}</span></p>
-                <p style="font-size: 9pt; margin-bottom: 8px; color: #cbd5e1;"><strong>Email Address:</strong><br/><span style="color: #ffffff; word-break: break-all;">${email}</span></p>
-                <p style="font-size: 9pt; margin-bottom: 8px; color: #cbd5e1;"><strong>Address / District:</strong><br/><span style="color: #ffffff;">${locationStr}</span></p>
-
-                <h3 class="sidebar-title">${skill1Head}</h3>
-                <ul>
-                  ${skills1Items.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-
-                <h3 class="sidebar-title">${skill2Head}</h3>
-                <ul>
-                  ${skills2Items.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-
-                <div style="margin-top: 25mm; font-size: 8pt; color: #94a3b8; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
-                  Employment Curriculum Vitae[cite: 1]
-                </div>
-              </td>
-
-              <td class="content-body" bgcolor="#ffffff" width="145mm" style="width: 145mm; background-color: #ffffff; height: 297mm; vertical-align: top; padding: 20mm 10mm 15mm 10mm;">
-                <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 12px;">
-                  <h1>${firstName} <span style="color: #0d1b2a;">${lastName}</span></h1>
-                  <p style="font-size: 11pt; font-weight: bold; text-transform: uppercase; color: #0e7490; margin-top: 4px;">${role}</p>
-                </div>
-
-                <h2>Career Objective</h2>
-                <p style="font-size: 9.5pt; text-align: justify; color: #334155;">${summary}</p>
-
-                <h2>Academic Qualifications</h2>
-                <table class="data-table" cellspacing="0" cellpadding="0">
-                  <thead>
-                    <tr>
-                      <th>Course / Examination</th>
-                      <th>Board / Council / University</th>
-                      <th style="text-align: center;">Year / Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${educationRows}
-                  </tbody>
-                </table>
-
-                <h2>Key Strengths &amp; Practical Highlights</h2>
-                <ul>
-                  ${highlightsItems.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-
-                <h2>Personal Bio-Data</h2>
-                <table style="width: 100%; border-collapse: collapse; background-color: #f8fafc; border: 1px solid #e2e8f0; font-size: 9pt; margin-top: 4px;" cellspacing="0" cellpadding="6">
-                  <tr>
-                    <td style="border: 1px solid #e2e8f0; width: 50%;"><strong>Father's Name:</strong> ${bioFather}</td>
-                    <td style="border: 1px solid #e2e8f0; width: 50%;"><strong>Date of Birth:</strong> ${bioDob}</td>
-                  </tr>
-                  <tr>
-                    <td style="border: 1px solid #e2e8f0;"><strong>Gender / Marital:</strong> ${bioGender} / ${bioMarital}</td>
-                    <td style="border: 1px solid #e2e8f0;"><strong>Religion:</strong> ${bioReligion}</td>
-                  </tr>
-                  <tr>
-                    <td style="border: 1px solid #e2e8f0;" colspan="2"><strong>Nationality:</strong> ${bioNation}</td>
-                  </tr>
-                  <tr>
-                    <td style="border: 1px solid #e2e8f0;" colspan="2"><strong>Languages Known:</strong> ${bioLang}</td>
-                  </tr>
-                </table>
-
-                <div style="margin-top: 20px; border-top: 1px solid #cbd5e1; padding-top: 10px; font-size: 8.5pt; color: #475569;">
-                  <p style="font-style: italic; margin-bottom: 8px;">"I hereby declare that all the information furnished above is authentic, correct, and complete to the best of my knowledge and belief."</p>
-                  <table style="width: 100%; border-collapse: collapse;" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td>
-                        <strong>Place:</strong> ${signPlace}<br/>
-                        <strong>Date:</strong> ${currentDate}
-                      </td>
-                      <td style="text-align: right;">
-                        <div style="width: 140px; border-bottom: 1px solid #64748b; margin-bottom: 4px; margin-left: auto;"></div>
-                        <strong>${signature}</strong><br/>
-                        <span style="font-size: 8pt; color: #64748b;">(Candidate Signature)</span>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `;
-
-      let mimeType = 'application/octet-stream';
-      if (chosenFormat === 'pdf') {
-        window.print();
-        return;
-      } else if (chosenFormat === 'docx') mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      else if (chosenFormat === 'doc') mimeType = 'application/msword';
-      else if (chosenFormat === 'html') mimeType = 'text/html;charset=utf-8';
-      else if (chosenFormat === 'txt') mimeType = 'text/plain;charset=utf-8';
-
-      let contentToBlob = professionalDocHtml;
-      if (chosenFormat === 'txt') {
-        contentToBlob = `CURRICULUM VITAE\n========================================\nName: ${firstName} ${lastName}\nDesignation: ${role}\nPhone: ${phone}\nEmail: ${email}\nLocation: ${locationStr}\n\nCAREER OBJECTIVE:\n${summary}\n\nACADEMIC QUALIFICATIONS:\n${educationList.map(e => `- ${e.title} | ${e.inst} | ${e.year}`).join('\n')}\n\nPERSONAL BIO-DATA:\n- Father's Name: ${bioFather}\n- Date of Birth: ${bioDob}\n- Gender/Marital: ${bioGender} / ${bioMarital}\n- Religion: ${bioReligion}\n- Nationality: ${bioNation}\n- Languages: ${bioLang}`;
-      }
-
-      const blob = createExactSizeBlob(contentToBlob, mimeType, sizeVal, unit);
-      triggerDownload(blob, filename);
+      if (!isFinite(raw) || raw <= 0) return null;
+      return Math.round(raw * (unit === 'MB' ? 1024 * 1024 : 1024));
     }
 
-    function exportFormat(format) {
-      selectExportFormat(format);
+    function updateExportPreview() {
+      const el = document.getElementById('export-size-preview');
+      if (!el) return;
+      const bytes = getTargetBytes();
+      if (bytes === null) {
+        el.textContent = 'Enter a valid size greater than 0.';
+        el.className = 'text-[10.5px] text-rose-300 font-mono font-semibold';
+        return;
+      }
+      el.className = 'text-[10.5px] text-cyan-300 font-mono font-semibold';
+      el.textContent = `Exact file size: ${bytes.toLocaleString('en-IN')} bytes`;
+    }
+
+    function showExportError(message) {
+      const box = document.getElementById('export-error');
+      box.textContent = message;
+      box.classList.remove('hidden');
+    }
+
+    function hideExportError() {
+      const box = document.getElementById('export-error');
+      if (!box) return;
+      box.textContent = '';
+      box.classList.add('hidden');
+    }
+
+    function sanitizeFileName(raw) {
+      const cleaned = (raw || '')
+        .replace(/\.pdf$/i, '')
+        .replace(/[\\/:*?"<>|\x00-\x1f]+/g, '_')
+        .trim();
+      return cleaned || 'Candidate_CV';
+    }
+
+    function asciiBytes(str) {
+      const out = new Uint8Array(str.length);
+      for (let i = 0; i < str.length; i++) out[i] = str.charCodeAt(i) & 0xff;
+      return out;
+    }
+
+    function pdfTextHex(str) {
+      let hex = 'FEFF';
+      for (let i = 0; i < str.length; i++) {
+        hex += str.charCodeAt(i).toString(16).padStart(4, '0').toUpperCase();
+      }
+      return '<' + hex + '>';
+    }
+
+    // Builds a single-page A4 PDF containing one JPEG image.
+    // `pad` extra bytes are inserted as a PDF comment in the header (ignored by readers).
+    function buildPdfBytes(jpegBytes, imgW, imgH, title, pad) {
+      const chunks = [];
+      let len = 0;
+      const push = (data) => {
+        const b = typeof data === 'string' ? asciiBytes(data) : data;
+        chunks.push(b);
+        len += b.length;
+      };
+
+      push('%PDF-1.4' + (pad === 1 ? ' ' : '') + '\n');
+      push(new Uint8Array([0x25, 0xE2, 0xE3, 0xCF, 0xD3, 0x0A]));
+      if (pad >= 2) push('%' + ' '.repeat(pad - 2) + '\n');
+
+      const offsets = [];
+      const beginObj = (n) => {
+        offsets[n] = len;
+        push(`${n} 0 obj\n`);
+      };
+
+      beginObj(1);
+      push('<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+
+      beginObj(2);
+      push('<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+
+      beginObj(3);
+      push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PDF_PAGE_W} ${PDF_PAGE_H}] /Resources << /XObject << /Im0 4 0 R >> /ProcSet [/PDF /ImageC] >> /Contents 5 0 R >>\nendobj\n`);
+
+      beginObj(4);
+      push(`<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`);
+      push(jpegBytes);
+      push('\nendstream\nendobj\n');
+
+      const content = `q\n${PDF_PAGE_W} 0 0 ${PDF_PAGE_H} 0 0 cm\n/Im0 Do\nQ\n`;
+      beginObj(5);
+      push(`<< /Length ${content.length} >>\nstream\n${content}endstream\nendobj\n`);
+
+      beginObj(6);
+      push(`<< /Title ${pdfTextHex(title)} /Producer (BengalProCV) /Creator (BengalProCV) >>\nendobj\n`);
+
+      const xrefOffset = len;
+      let xref = 'xref\n0 7\n0000000000 65535 f \n';
+      for (let n = 1; n <= 6; n++) {
+        xref += String(offsets[n]).padStart(10, '0') + ' 00000 n \n';
+      }
+      push(xref);
+      push(`trailer\n<< /Size 7 /Root 1 0 R /Info 6 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`);
+
+      const out = new Uint8Array(len);
+      let p = 0;
+      for (const c of chunks) {
+        out.set(c, p);
+        p += c.length;
+      }
+      return out;
+    }
+
+    // Adjusts padding until the PDF is exactly `target` bytes. Returns null if impossible.
+    function fitPdfToBytes(jpegBytes, imgW, imgH, title, target) {
+      let pad = target - buildPdfBytes(jpegBytes, imgW, imgH, title, 0).length;
+      if (pad < 0) return null;
+      for (let i = 0; i < 8; i++) {
+        const out = buildPdfBytes(jpegBytes, imgW, imgH, title, pad);
+        const diff = target - out.length;
+        if (diff === 0) return out;
+        pad += diff;
+        if (pad < 0) return null;
+      }
+      return null;
+    }
+
+    function canvasToJpegBytes(canvas, quality) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject(new Error('Image encoding failed in this browser.'));
+            return;
+          }
+          blob.arrayBuffer().then((buf) => resolve(new Uint8Array(buf)), reject);
+        }, 'image/jpeg', quality);
+      });
+    }
+
+    async function renderCvCanvas(source, scale) {
+      // Render an id-free clone off-screen so scrolling/clipping of the preview never affects the output
+      const holder = document.createElement('div');
+      holder.style.cssText = 'position:absolute;left:-10000px;top:0;width:210mm;height:297mm;background:#ffffff;';
+      const clone = source.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+      holder.appendChild(clone);
+      document.body.appendChild(holder);
+      try {
+        return await html2canvas(clone, {
+          scale: scale,
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          logging: false,
+          width: clone.offsetWidth,
+          height: clone.offsetHeight
+        });
+      } finally {
+        holder.remove();
+      }
+    }
+
+    async function generateExactSizePdf(targetBytes, title) {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+      const source = document.getElementById('cv-document');
+      const scales = [2, 1];
+      let smallestPossible = Infinity;
+
+      for (const scale of scales) {
+        const canvas = await renderCvCanvas(source, scale);
+        const W = canvas.width;
+        const H = canvas.height;
+        const measure = (jpeg) => buildPdfBytes(jpeg, W, H, title, 0).length;
+
+        const lowJpeg = await canvasToJpegBytes(canvas, 0.05);
+        const lowLen = measure(lowJpeg);
+        smallestPossible = Math.min(smallestPossible, lowLen);
+        if (lowLen > targetBytes) continue;
+
+        // Find the highest JPEG quality whose PDF still fits within the target size
+        let bestJpeg = lowJpeg;
+        const topJpeg = await canvasToJpegBytes(canvas, 0.95);
+        if (measure(topJpeg) <= targetBytes) {
+          bestJpeg = topJpeg;
+        } else {
+          let lo = 0.05;
+          let hi = 0.95;
+          for (let i = 0; i < 9; i++) {
+            const mid = (lo + hi) / 2;
+            const jpeg = await canvasToJpegBytes(canvas, mid);
+            if (measure(jpeg) <= targetBytes) {
+              bestJpeg = jpeg;
+              lo = mid;
+            } else {
+              hi = mid;
+            }
+          }
+        }
+
+        const pdf = fitPdfToBytes(bestJpeg, W, H, title, targetBytes);
+        if (pdf) return pdf;
+      }
+
+      const minKB = Math.ceil(smallestPossible / 1024);
+      throw new Error(`This CV needs at least about ${minKB} KB. Please enter a larger size.`);
+    }
+
+    async function executeFinalExport() {
+      const btn = document.getElementById('export-download-btn');
+      const label = document.getElementById('export-download-label');
+      hideExportError();
+
+      const bytes = getTargetBytes();
+      if (bytes === null) {
+        showExportError('Please enter a valid size greater than 0.');
+        return;
+      }
+      if (bytes < EXPORT_MIN_BYTES) {
+        showExportError('The minimum size is 1 KB.');
+        return;
+      }
+      if (bytes > EXPORT_MAX_BYTES) {
+        showExportError('The maximum size is 50 MB.');
+        return;
+      }
+      if (typeof html2canvas !== 'function') {
+        showExportError('The PDF engine could not load. Check your internet connection and try again.');
+        return;
+      }
+
+      const name = sanitizeFileName(document.getElementById('custom-filename-input').value);
+
+      btn.disabled = true;
+      label.textContent = 'Generating exact PDF…';
+      try {
+        const pdfBytes = await generateExactSizePdf(bytes, name);
+        triggerDownload(new Blob([pdfBytes], { type: 'application/pdf' }), `${name}.pdf`);
+        closeFormatModal();
+      } catch (err) {
+        showExportError((err && err.message) ? err.message : 'Something went wrong while creating the PDF. Please try again.');
+      } finally {
+        btn.disabled = false;
+        label.textContent = 'Download PDF';
+      }
     }
 
     function triggerDownload(blob, filename) {
@@ -1132,7 +1144,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
     // ================= LOCALSTORAGE PERSISTENCE & HISTORY ENGINE =================
@@ -1198,7 +1210,7 @@
       isPerformingHistoryOp = true;
 
       if (state.preset) document.getElementById('preset-selector').value = state.preset;
-      
+
       document.getElementById('in-fn').value = state.fn || '';
       document.getElementById('in-ln').value = state.ln || '';
       document.getElementById('in-role').value = state.role || '';
@@ -1329,6 +1341,8 @@
         renderQuickSkills(pData.quick1 || [], pData.quick2 || []);
       }
 
+      syncPresetUI(document.getElementById('preset-selector').value || 'dmlt');
+
       if (state.step) {
         setStep(state.step);
       }
@@ -1413,23 +1427,19 @@
     // Instant Reset to Default: Clears storage, resets photo, reloads selected profile, and returns to Step 1
     function resetToInitialPreset() {
       const activeKey = document.getElementById('preset-selector').value || 'dmlt';
-      
-      // 1. Wipe storage and history stacks
+
       localStorage.removeItem(STORAGE_KEY);
       undoStack = [];
       redoStack = [];
 
-      // 2. Reset photo to system default avatar and reset photo controls
       document.getElementById('cv-avatar-img').src = DEFAULT_AVATAR;
       rawOriginalImage = new Image();
       document.getElementById('photo-file').value = '';
       resetCropControls();
       setPhotoState(true);
 
-      // 3. Load profile clean data
       loadPreset(activeKey);
 
-      // 4. Force jump directly to Stage 1 (Personal) and scroll to top
       setStep(1);
       document.getElementById('form-scroll-area').scrollTop = 0;
 
@@ -1542,7 +1552,7 @@
     // ================= 4-WAY ARROW NAVIGATION =================
     document.addEventListener('keydown', (e) => {
       const target = e.target;
-      if (!target.classList.contains('nav-grid-input')) return;
+      if (!target.classList || !target.classList.contains('nav-grid-input')) return;
 
       const currentRow = parseInt(target.getAttribute('data-row'), 10);
       const currentCol = parseInt(target.getAttribute('data-col'), 10);
@@ -1762,6 +1772,115 @@
       });
     }
 
+    // ================= COLORFUL STUDENT PROFILE PICKER =================
+    // Each profile gets its own two-colour gradient used by the trigger and the menu.
+    const PRESET_META = {
+      dmlt:         { icon: '🧪', short: 'DMLT Student',            c1: '#06b6d4', c2: '#3b82f6' },
+      graduate:     { icon: '🎓', short: 'Graduation Completed',    c1: '#a855f7', c2: '#ec4899' },
+      grad_ongoing: { icon: '📚', short: 'Graduation Ongoing',      c1: '#6366f1', c2: '#8b5cf6' },
+      hs_science:   { icon: '🔬', short: '10+2 Science',            c1: '#0ea5e9', c2: '#14b8a6' },
+      hs_arts:      { icon: '🎨', short: '10+2 Arts / Humanities',  c1: '#f43f5e', c2: '#fb923c' },
+      hs_commerce:  { icon: '💼', short: '10+2 Commerce',           c1: '#f59e0b', c2: '#eab308' },
+      madhyamik:    { icon: '🏫', short: 'Madhyamik Fresher',       c1: '#10b981', c2: '#0d9488' }
+    };
+
+    function presetGradient(meta) {
+      return `linear-gradient(135deg, ${meta.c1}, ${meta.c2})`;
+    }
+
+    function getPresetMeta(key) {
+      return PRESET_META[key] || { icon: '⭐', short: 'Profile', c1: '#0ea5e9', c2: '#6366f1' };
+    }
+
+    function togglePresetMenu() {
+      const menu = document.getElementById('preset-menu');
+      if (menu.classList.contains('hidden')) {
+        openPresetMenu();
+      } else {
+        closePresetMenu();
+      }
+    }
+
+    function openPresetMenu() {
+      document.getElementById('preset-menu').classList.remove('hidden');
+      document.getElementById('preset-trigger').setAttribute('aria-expanded', 'true');
+      document.getElementById('preset-chevron').style.transform = 'rotate(180deg)';
+    }
+
+    function closePresetMenu() {
+      const menu = document.getElementById('preset-menu');
+      if (!menu) return;
+      menu.classList.add('hidden');
+      document.getElementById('preset-trigger').setAttribute('aria-expanded', 'false');
+      document.getElementById('preset-chevron').style.transform = 'rotate(0deg)';
+    }
+
+    function choosePreset(key) {
+      closePresetMenu();
+      loadPreset(key);
+    }
+
+    function buildPresetMenu(activeKey) {
+      const menu = document.getElementById('preset-menu');
+      const select = document.getElementById('preset-selector');
+      menu.textContent = '';
+
+      Array.from(select.options).forEach(opt => {
+        const meta = getPresetMeta(opt.value);
+        const isActive = opt.value === activeKey;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('role', 'option');
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.className = 'w-full flex items-center gap-2.5 p-2 rounded-lg text-left transition hover:bg-white/10';
+        if (isActive) {
+          btn.style.background = `linear-gradient(120deg, ${meta.c1}33, ${meta.c2}33)`;
+          btn.style.boxShadow = `inset 0 0 0 1px ${meta.c1}88`;
+        }
+
+        const badge = document.createElement('span');
+        badge.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 shadow-md';
+        badge.style.background = presetGradient(meta);
+        badge.textContent = meta.icon;
+
+        const text = document.createElement('span');
+        text.className = 'flex-1 min-w-0 text-[11px] leading-snug break-words ' + (isActive ? 'font-bold text-white' : 'font-medium text-slate-200');
+        text.textContent = opt.textContent;
+
+        const tick = document.createElement('span');
+        tick.className = 'text-xs font-bold shrink-0';
+        tick.style.color = meta.c1;
+        tick.textContent = isActive ? '✓' : '';
+
+        btn.appendChild(badge);
+        btn.appendChild(text);
+        btn.appendChild(tick);
+        btn.onclick = () => choosePreset(opt.value);
+        menu.appendChild(btn);
+      });
+    }
+
+    function syncPresetUI(key) {
+      const select = document.getElementById('preset-selector');
+      if (!select || select.options.length === 0) return;
+      const opt = Array.from(select.options).find(o => o.value === key) || select.options[0];
+      const meta = getPresetMeta(opt.value);
+
+      const trigger = document.getElementById('preset-trigger');
+      trigger.style.background = `linear-gradient(120deg, ${meta.c1}2e, ${meta.c2}2e)`;
+      trigger.style.borderColor = `${meta.c1}88`;
+
+      const icon = document.getElementById('preset-trigger-icon');
+      icon.style.background = presetGradient(meta);
+      icon.textContent = meta.icon;
+
+      document.getElementById('preset-trigger-title').textContent = meta.short;
+      document.getElementById('preset-trigger-sub').textContent = opt.textContent;
+
+      buildPresetMenu(opt.value);
+    }
+
     // ================= PRESETS WITH WEST BENGAL FOCUS =================
     const presets = {
       madhyamik: {
@@ -1786,16 +1905,16 @@
         summary: "Sincere Madhyamik (10th standard W.B.B.S.E. Board) pass fresher candidate seeking an entry-level assistant, helper, or trainee position in a commercial office, clinic, or store. Ready to perform assigned duties with high dedication, honesty, and hard work.",
         highlights: "Disciplined student with spotless school track record under West Bengal Board.\nAttentive listener with ability to execute tasks systematically without delay.\nReliable, hardworking attitude with polite verbal communication skills.",
         quick1: [
-          "Front Desk Visitor Reception", 
-          "Physical File Sorting & Binding", 
-          "Daily Stock Register Entry", 
+          "Front Desk Visitor Reception",
+          "Physical File Sorting & Binding",
+          "Daily Stock Register Entry",
           "Office Errand Management",
           "Customer Service Assistance"
         ],
         quick2: [
-          "Basic PC English Typing", 
-          "Smartphone Billing App Ops", 
-          "Cash Counter Management", 
+          "Basic PC English Typing",
+          "Smartphone Billing App Ops",
+          "Cash Counter Management",
           "Courier & Parcel Packing",
           "Photocopy & Paper Scanning"
         ],
@@ -1825,16 +1944,16 @@
         summary: "Diligent science graduate admitted into the Diploma in Medical Laboratory Technology (DMLT) curriculum under the State Medical Faculty of West Bengal (S.M.F.W.B.). Trained in aseptic phlebotomy collection, routine biochemistry assays, and laboratory sterilization protocols. Seeking an internship or trainee laboratory technician position in an active hospital pathology department or diagnostic laboratory.",
         highlights: "Hands-on experience in collecting venous blood samples using standard vacuum collection tubes.\nConversant with clinical laboratory quality control procedures, reagent preparation, and bio-safety protocols.\nPunctual, patient-friendly communication with a strong commitment to accurate diagnosis and bio-medical waste segregation.",
         quick1: [
-          "Blood Grouping & Rh Typing", 
-          "ESR Estimation (Westergren Method)", 
-          "Hemoglobin Test (Sahli & Cyanmet)", 
+          "Blood Grouping & Rh Typing",
+          "ESR Estimation (Westergren Method)",
+          "Hemoglobin Test (Sahli & Cyanmet)",
           "Routine Urine & Stool Microscopic Exam",
           "Peripheral Blood Smear (Leishman Stain)"
         ],
         quick2: [
-          "Bio-Medical Waste (BMW) Color Coding", 
-          "LIMS Pathology Software Entry", 
-          "Cold-Chain Sample Preservation", 
+          "Bio-Medical Waste (BMW) Color Coding",
+          "LIMS Pathology Software Entry",
+          "Cold-Chain Sample Preservation",
           "Semi-Auto Biochemistry Analyzer Ops",
           "Autoclave & Hot Air Oven Sterilization"
         ],
@@ -1867,16 +1986,16 @@
         summary: "Dedicated degree graduate with strong analytical, computational, and communication capabilities. Well-versed in office productivity applications, official correspondence, and data verification. Seeking a challenging role as an executive trainee, administrative assistant, or operational associate in a reputed organization.",
         highlights: "Graduated with First Class distinction from University of Calcutta regular degree curriculum.\nCompleted advanced computerized office automation and data management training.\nFast typing speed, meticulous attention to detail, and ability to handle high-volume documentation.",
         quick1: [
-          "Office File Management & Indexing", 
-          "Official Letter & Email Drafting", 
-          "Client Communication & Follow-up", 
+          "Office File Management & Indexing",
+          "Official Letter & Email Drafting",
+          "Client Communication & Follow-up",
           "Data Reconciliation & Auditing",
           "Inter-Departmental Workflow Supervision"
         ],
         quick2: [
-          "MS Excel (VLOOKUP & Pivot Tables)", 
-          "Google Workspace (Docs & Sheets)", 
-          "Data Entry (35+ WPM Accuracy)", 
+          "MS Excel (VLOOKUP & Pivot Tables)",
+          "Google Workspace (Docs & Sheets)",
+          "Data Entry (35+ WPM Accuracy)",
           "Presentation Design (PowerPoint)",
           "MIS Daily Operational Reporting"
         ],
@@ -1908,16 +2027,16 @@
         summary: "Undergraduate student currently in final phase of degree graduation under Semester/CBCS pattern. Possesses solid foundational analytical ability, good organizational discipline, and modern computer operational skills. Looking for an entry-level trainee, apprentice, or executive assistant position to apply academic abilities.",
         highlights: "Maintained a strong Cumulative Grade Point Average (CGPA) across all completed semesters.\nCompleted certified Diploma in Computer Applications from Youth Computer Training Centre (YCTC).\nActive participant in inter-college academic seminars and NSS social service initiatives.",
         quick1: [
-          "Academic Report Presentation", 
-          "Quantitative Problem Solving", 
-          "College Seminar Coordination", 
+          "Academic Report Presentation",
+          "Quantitative Problem Solving",
+          "College Seminar Coordination",
           "Time Management & Strict Deadlines",
           "Team Leadership & Group Activities"
         ],
         quick2: [
-          "YCTC CITA Certified IT Skills", 
-          "MS Word Formal Document Layout", 
-          "Excel Database & Chart Creation", 
+          "YCTC CITA Certified IT Skills",
+          "MS Word Formal Document Layout",
+          "Excel Database & Chart Creation",
           "Google Drive & Cloud Documenting",
           "Fast Web Search & Verification"
         ],
@@ -1949,16 +2068,16 @@
         summary: "Disciplined Higher Secondary (10+2 WBCHSE Science stream) pass out candidate equipped with solid mathematical, analytical, and computer capabilities. Eager to work in entry-level data processing, technical assistance, or healthcare support roles while delivering maximum diligence and accuracy.",
         highlights: "Completed certified Computer Application training from West Bengal Youth Computer Training Centre (YCTC).\nCompleted all Physics, Chemistry, and Biology school laboratory experiments with distinction.\nMaintained 100% attendance and demonstrated exceptional punctuality throughout school tenure.",
         quick1: [
-          "Laboratory Equipment Handling", 
-          "Mathematical & Statistical Calculation", 
-          "Scientific Data Logging & Verification", 
+          "Laboratory Equipment Handling",
+          "Mathematical & Statistical Calculation",
+          "Scientific Data Logging & Verification",
           "Analytical Problem Troubleshooting",
           "Standard Safety Protocols Adherence"
         ],
         quick2: [
-          "YCTC DITA Certified Computer Skills", 
-          "MS Excel Formula Computation", 
-          "Fast Numeric Data Keying", 
+          "YCTC DITA Certified Computer Skills",
+          "MS Excel Formula Computation",
+          "Fast Numeric Data Keying",
           "Printer, Scanner & Copier Handling",
           "Digital Document Filing & Backup"
         ],
@@ -1989,16 +2108,16 @@
         summary: "Dedicated Higher Secondary (10+2 WBCHSE Arts stream) pass out candidate with strong communication, typing, and interpersonal skills. Seeking an entry-level clerical assistant, front-desk coordinator, or administrative trainee role where sincere work ethic and detail-oriented record management contribute to daily office operations.",
         highlights: "School House Prefect with proven experience in maintaining student registers and event discipline.\nFast English and Bengali typing speed with strong grammatical command.\nRecognized for exceptional attendance, polite behavior, and rapid completion of paperwork tasks.",
         quick1: [
-          "Bengali & English Letter Drafting", 
-          "Physical File Register Maintenance", 
-          "Front Desk Visitor Reception", 
+          "Bengali & English Letter Drafting",
+          "Physical File Register Maintenance",
+          "Front Desk Visitor Reception",
           "Grammar Proofreading & Verification",
           "Public Relationship & Coordination"
         ],
         quick2: [
-          "Bengali Typing (Avro / Bijoy)", 
-          "MS Word Formatting & Table Layouts", 
-          "Computerized Data Entry (35 WPM)", 
+          "Bengali Typing (Avro / Bijoy)",
+          "MS Word Formatting & Table Layouts",
+          "Computerized Data Entry (35 WPM)",
           "Document Digitization & Scanning",
           "Email Correspondence & Dispatch"
         ],
@@ -2029,16 +2148,16 @@
         summary: "Meticulous and numerical Higher Secondary (10+2 WBCHSE Commerce stream) pass out candidate looking for a junior accounts assistant, billing executive, or commercial trainee role. Possesses strong foundations in financial accounting, Tally operations, and spreadsheet analysis.",
         highlights: "Completed certified course in Computerized Accounting and Tally from Youth Computer Centre.\nHigh accuracy in manual ledger reconciliation and digital bill entry.\nStrong commercial arithmetic acumen with commitment to error-free record keeping.",
         quick1: [
-          "Debit / Credit Journal Entries", 
-          "Cash Book & Bank Reconciliation", 
-          "Commercial Billing & Discount Math", 
+          "Debit / Credit Journal Entries",
+          "Cash Book & Bank Reconciliation",
+          "Commercial Billing & Discount Math",
           "Purchase & Sales Register Audit",
           "Petty Cash & Voucher Processing"
         ],
         quick2: [
-          "Tally ERP 9 / Tally Prime Vouchers", 
-          "GST Tax Invoicing Basics", 
-          "MS Excel (SUMIF, VLOOKUP, Sorting)", 
+          "Tally ERP 9 / Tally Prime Vouchers",
+          "GST Tax Invoicing Basics",
+          "MS Excel (SUMIF, VLOOKUP, Sorting)",
           "Computerized Inventory Management",
           "Numeric Keypad 10-Key Speed Entry"
         ],
@@ -2098,13 +2217,13 @@
     function showCropModal() {
       const modalImg = document.getElementById('modal-crop-img');
       modalImg.src = rawOriginalImage.src;
-      
+
       const containerSize = 208;
       const naturalW = rawOriginalImage.naturalWidth || containerSize;
       const naturalH = rawOriginalImage.naturalHeight || containerSize;
-      
+
       baseScale = containerSize / Math.min(naturalW, naturalH);
-      
+
       resetCropControls();
       document.getElementById('crop-modal').classList.remove('hidden');
     }
@@ -2267,7 +2386,7 @@
       const nextLabel = document.getElementById('label-next-btn');
 
       if (step === 4) {
-        nextLabel.textContent = "Print / Save as PDF";
+        nextLabel.textContent = "Export PDF";
         nextBtn.className = 'text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 px-5 py-2 rounded-lg shadow-lg transition flex items-center gap-1.5';
       } else {
         nextLabel.textContent = "Next";
@@ -2343,8 +2462,8 @@
       const container = document.getElementById('global-combo-list');
       container.textContent = '';
 
-      const filtered = filterText 
-        ? activeList.filter(item => item.toLowerCase().includes(filterText)) 
+      const filtered = filterText
+        ? activeList.filter(item => item.toLowerCase().includes(filterText))
         : activeList;
 
       if (filtered.length === 0) {
@@ -2418,11 +2537,20 @@
       }
     }, true);
 
+    // Close the profile menu when clicking anywhere outside it
+    document.addEventListener('mousedown', (e) => {
+      const wrap = document.getElementById('preset-wrapper');
+      if (wrap && !wrap.contains(e.target)) {
+        closePresetMenu();
+      }
+    });
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeFloatingCombo();
         closeCalendarModal();
         closeFormatModal();
+        closePresetMenu();
       }
     });
 
@@ -2534,7 +2662,7 @@
       const day = parseInt(parts[2], 10);
 
       const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      
+
       let suffix = "th";
       if (day === 1 || day === 21 || day === 31) suffix = "st";
       else if (day === 2 || day === 22) suffix = "nd";
@@ -2551,7 +2679,7 @@
       educationList.forEach((item, index) => {
         const card = document.createElement('div');
         card.className = "bg-slate-900/95 p-3.5 rounded-xl border border-slate-800 space-y-2.5 relative text-xs shadow-sm";
-        
+
         const degInputId = `edu-deg-${index}`;
         const instInputId = `edu-inst-${index}`;
         const yrInputId = `edu-yr-${index}`;
@@ -2782,7 +2910,7 @@
       document.getElementById('lang-hi-read').checked = langStr.includes('Hindi (R') || langStr.includes('Hindi (R/W/S)');
       document.getElementById('lang-hi-write').checked = langStr.includes('Hindi (R/W') || langStr.includes('Hindi (R/W/S)');
       document.getElementById('lang-hi-speak').checked = langStr.includes('Hindi');
-      
+
       const otherRow = document.getElementById('wrapper-custom-lang-row');
       otherRow.classList.add('hidden');
       document.getElementById('btn-toggle-other-lang').textContent = "+ Add Other Language (Urdu, Nepali, Santali, etc.)";
@@ -2800,6 +2928,7 @@
 
       educationList = JSON.parse(JSON.stringify(data.education));
       renderEducationEditor();
+      syncPresetUI(key);
       updateResume();
       recordStateForHistory();
     }
@@ -2811,15 +2940,15 @@
       safeSetText('cv-fn', fn);
       safeSetText('cv-ln', ln);
       safeSetText('cv-signature', `${fn} ${ln}`.trim());
-      
+
       safeSetText('cv-role', document.getElementById('in-role').value);
       safeSetText('cv-phone', document.getElementById('in-phone').value);
       safeSetText('cv-email', document.getElementById('in-email').value);
-      
+
       const loc = document.getElementById('in-loc').value;
       const pin = document.getElementById('in-pin').value;
       safeSetText('cv-location', `${loc} ${pin ? '- ' + pin : ''}`.trim());
-      
+
       const placeName = loc.split(',')[0].trim() || 'Kolkata';
       safeSetText('cv-sign-place', placeName);
 
